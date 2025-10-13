@@ -127,7 +127,7 @@
                     <textarea class="form-control" id="comment" placeholder="Изоҳ қолдиринг"></textarea>
                 </div>
                 
-                <button class="btn" onclick="savePatronage()"><i class="fas fa-save"></i> Маълумотларни Сақлаш</button>
+                <button class="btn" onclick="savePatronage()"><i class="fas fa-paper-plane"></i> Юбориш</button>
                 
                 <div class="success" id="successMessage">
                     <i class="fas fa-check-circle"></i> Маълумотлар муваффақиятли сақланди!
@@ -138,15 +138,13 @@
                 <h2><i class="fas fa-info-circle"></i> Тизим Ҳақида</h2>
                 <p>Тошлоқ ТТБ Патронаж Ҳамширалари тизими беморларни уй шароитида кузатиш, тиббий ёрдам кўрсатиш ва уларнинг ҳолатини мониторинг қилиш имкониятини беради.</p>
                 
-                <h3 style="margin-top: 20px;">Статистика</h3>
+                <h3 style="margin-top: 20px;">Иш тартиби</h3>
                 <ul style="list-style-type: none; padding-left: 0;">
-                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-user-injured"></i> Фаол беморлар: <strong>24</strong></li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-home"></i> Уйда патронаж: <strong>18</strong></li>
-                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-hospital"></i> Муассасада патронаж: <strong>6</strong></li>
-                    <li style="padding: 8px 0;"><i class="fas fa-calendar-check"></i> Бугуниги патронажлар: <strong>5</strong></li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-check-circle"></i> Янги патронаж қўшиш</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-check-circle"></i> Бемор маълумотларини киритиш</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-check-circle"></i> Патронаж мақсадини белгилаш</li>
+                    <li style="padding: 8px 0;"><i class="fas fa-check-circle"></i> Хулоса ва изоҳ қолдириш</li>
                 </ul>
-                
-                <button class="btn btn-secondary" style="margin-top: 20px; width: 100%;"><i class="fas fa-chart-line"></i> Батафсил Статистика</button>
             </div>
         </div>
     </div>
@@ -176,7 +174,7 @@
             }
 
             // Telegram bot orqali yuborish
-            const botToken = '';
+            const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
             const chatId = '4819414842';
             
             const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
@@ -192,6 +190,7 @@
 
 ⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
 
+            // Telegram API ga so'rov yuborish
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -203,28 +202,33 @@
             .then(response => response.json())
             .then(data => {
                 if(data.ok) {
-                    document.getElementById('successMessage').style.display = 'block';
-                    
-                    // Formani tozalash
-                    document.getElementById('dpnName').value = '';
-                    document.getElementById('loginFI').value = '';
-                    document.getElementById('patientFI').value = '';
-                    document.getElementById('birthDate').value = '';
-                    document.getElementById('patronageLocation').value = '';
-                    document.getElementById('lotGoal').value = '';
-                    document.getElementById('conclusion').value = '';
-                    document.getElementById('comment').value = '';
-                    
-                    setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
-                    }, 5000);
+                    showSuccessMessage();
                 } else {
-                    alert('❌ Маълумотларни сақлашда хатолик юз берди. Илтимос, қайтадан уриниб кўринг.');
+                    alert('❌ Маълумотларни юборишда хатолик юз берди. Илтимос, қайтадан уриниб кўринг.');
                 }
             })
             .catch(error => {
-                alert('✅ Маълумотлар сақланди!');
+                console.error('Xatolik:', error);
+                alert('❌ Серверга уланишда хатолик. Илтимос, интернет алоқасини текширинг.');
             });
+        }
+
+        function showSuccessMessage() {
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Formani tozalash
+            document.getElementById('dpnName').value = '';
+            document.getElementById('loginFI').value = '';
+            document.getElementById('patientFI').value = '';
+            document.getElementById('birthDate').value = '';
+            document.getElementById('patronageLocation').value = '';
+            document.getElementById('lotGoal').value = '';
+            document.getElementById('conclusion').value = '';
+            document.getElementById('comment').value = '';
+            
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
         }
     </script>
 </body>
