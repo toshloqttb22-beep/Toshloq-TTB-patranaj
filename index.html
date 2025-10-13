@@ -46,6 +46,7 @@
         
         .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
         .location-status { background: #d1ecf1; color: #0c5460; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
         
         @media (max-width: 768px) {
             .header-content { flex-direction: column; text-align: center; }
@@ -140,10 +141,16 @@
                     </div>
                 </div>
                 
-                <button class="btn" onclick="savePatronage()"><i class="fas fa-paper-plane"></i> Юбориш</button>
+                <button class="btn" onclick="savePatronage()" style="width: 100%; margin-top: 10px;">
+                    <i class="fas fa-paper-plane"></i> Юбориш
+                </button>
                 
                 <div class="success" id="successMessage">
                     <i class="fas fa-check-circle"></i> Маълумотлар муваффақиятли юборилди!
+                </div>
+                
+                <div class="error" id="errorMessage">
+                    <i class="fas fa-exclamation-circle"></i> Маълумотларни юборишда хатолик юз берди!
                 </div>
             </div>
             
@@ -200,11 +207,7 @@
                     locationBtn.innerHTML = '<i class="fas fa-check-circle"></i> Жойлашув Олинди';
                     locationBtn.style.background = '#10AC84';
                     
-                    setTimeout(() => {
-                        locationBtn.innerHTML = originalText;
-                        locationBtn.disabled = false;
-                        locationBtn.style.background = '#FF9F43';
-                    }, 3000);
+                    console.log('Жойлашув олинди:', userLocation);
                     
                 },
                 function(error) {
@@ -231,13 +234,17 @@
                 },
                 {
                     enableHighAccuracy: true,
-                    timeout: 10000,
+                    timeout: 15000,
                     maximumAge: 60000
                 }
             );
         }
 
         function savePatronage() {
+            // Xabarlarni tozalash
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+
             const dpnName = document.getElementById('dpnName').value;
             const loginFI = document.getElementById('loginFI').value;
             const patientFI = document.getElementById('patientFI').value;
@@ -257,12 +264,18 @@
                 return;
             }
 
+            // Юбориш тугмасини блоклаш
+            const submitBtn = document.querySelector('.btn');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Юборилмоқда...';
+            submitBtn.disabled = true;
+
             // Telegram bot orqali yuborish
             const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
-            const chatId = '4819414842';
+            const chatId = '1004819414842';
             
-            const locationLink = `https://maps.google.com/?q=${userLocation.latitude},${userLocation.longitude}`;
-            const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (аниклик: ${userLocation.accuracy.toFixed(1)}м)`;
+            const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
+            const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)}`;
             
             const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
 
@@ -280,28 +293,51 @@
 
 ⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
 
+            console.log('Telegram хабар:', message);
+
             // Telegram API ga so'rov yuborish
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
                     chat_id: chatId,
-                    text: message
+                    text: message,
+                    parse_mode: 'HTML'
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('Telegram response:', data);
+                
                 if(data.ok) {
                     showSuccessMessage();
                     userLocation = null; // Жойлашувни тозалаш
                     document.getElementById('locationStatus').style.display = 'none';
+                    
+                    // Жойлашув тугмасини қайта тиклаш
+                    const locationBtn = document.querySelector('.btn-location');
+                    locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш';
+                    locationBtn.disabled = false;
+                    locationBtn.style.background = '#FF9F43';
+                    
                 } else {
-                    alert('❌ Маълумотларни юборишда хатолик юз берди. Илтимос, қайтадан уриниб кўринг.');
+                    document.getElementById('errorMessage').style.display = 'block';
+                    console.error('Telegram error:', data);
                 }
             })
             .catch(error => {
                 console.error('Xatolik:', error);
-                alert('❌ Серверга уланишда хатолик. Илтимос, интернет алоқасини текширинг.');
+                document.getElementById('errorMessage').style.display = 'block';
+            })
+            .finally(() => {
+                // Тугмани қайта тиклаш
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
             });
         }
 
@@ -318,16 +354,13 @@
             document.getElementById('conclusion').value = '';
             document.getElementById('comment').value = '';
             
-            // Жойлашув тугмасини қайта тиклаш
-            const locationBtn = document.querySelector('.btn-location');
-            locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш';
-            locationBtn.disabled = false;
-            locationBtn.style.background = '#FF9F43';
-            
             setTimeout(() => {
                 document.getElementById('successMessage').style.display = 'none';
             }, 5000);
         }
+
+        // Sayt yuklanganda konsolga xabar chiqarish
+        console.log('Toshloq TTB Patronaj sayti yuklandi');
     </script>
 </body>
 </html>
