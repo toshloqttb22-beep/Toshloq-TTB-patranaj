@@ -89,8 +89,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Логин Ф.И.</label>
-                    <input type="text" class="form-control" id="loginFI" placeholder="Логин Ф.И.ни киритинг">
+                    <label>Ходим Ф.И.</label>
+                    <input type="text" class="form-control" id="loginFI" placeholder="Ходим Ф.И.ни киритинг">
                 </div>
                 
                 <div class="form-group">
@@ -113,8 +113,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Лот мақсади</label>
-                    <textarea class="form-control" id="lotGoal" placeholder="Лот мақсадини киритинг"></textarea>
+                    <label>Патронаж мақсади</label>
+                    <textarea class="form-control" id="lotGoal" placeholder="Патронаж мақсадини киритинг"></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -179,17 +179,17 @@
             }
 
             // Telegram bot orqali yuborish
-            const botToken = '7834547756:AAFU2oAnmwVhlw43Mfodm6AKAdPD4t5DoK0';
-            const chatId = '-1002503400045';
+            const botToken = '';
+            const chatId = '4819414842';
             
             const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
 
 📋 ДПН номи: ${dpnName}
-👤 Логин Ф.И.: ${loginFI}
+👤 Ходим Ф.И.: ${loginFI}
 👨‍⚕️ Бемор Ф.И.: ${patientFI}
 📅 Туғилган йили: ${birthDate}
 📍 Патронаж жойи: ${patronageLocation}
-🎯 Лот мақсади: ${lotGoal}
+🎯 Патронаж мақсади: ${lotGoal}
 📝 Хулоса: ${conclusion}
 💬 Изоҳ: ${comment || "Изоҳ қолдирилмаган"}
 
