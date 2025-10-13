@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toshlog TTB Patronaj Hamshiralari</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #f8f9fa; color: #333; line-height: 1.6; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        header { background: linear-gradient(135deg, #2E86DE, #1a6fc6); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: bold; display: flex; align-items: center; }
+        .logo i { margin-right: 10px; font-size: 2rem; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
+        nav ul li a:hover { opacity: 0.8; }
+        
+        .hero { background: white; padding: 60px 0; text-align: center; border-radius: 0 0 15px 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: #2c3e50; }
+        .hero p { font-size: 1.2rem; color: #7f8c8d; max-width: 700px; margin: 0 auto; }
+        
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card h2 { color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f1f2f6; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
+        .form-control { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
+        .form-control:focus { border-color: #2E86DE; outline: none; }
+        textarea.form-control { height: 120px; resize: vertical; }
+        
+        .btn { background: #2E86DE; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; }
+        .btn:hover { background: #1a6fc6; }
+        .btn-secondary { background: #10AC84; }
+        .btn-secondary:hover { background: #0D8C6B; }
+        
+        footer { background: #2c3e50; color: white; padding: 30px 0; margin-top: 50px; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; }
+        
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            nav ul { margin-top: 15px; }
+            nav ul li { margin: 0 10px; }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-stethoscope"></i>
+                <span>Toshlog TTB Patronaj Hamshiralari</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Бош саҳифа</a></li>
+                    <li><a href="#"><i class="fas fa-clipboard-list"></i> Патронажлар</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Беморлар</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Созламалар</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Тиббий Патронаж Тизими</h1>
+            <p>Беморларни уй шароитида кузатиш ва тиббий ёрдам кўрсатиш</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="dashboard">
+            <div class="card">
+                <h2><i class="fas fa-plus-circle"></i> Янги Патронаж Қўшиш</h2>
+                
+                <div class="form-group">
+                    <label>ДПН номи</label>
+                    <input type="text" class="form-control" id="dpnName" placeholder="ДПН номини киритинг">
+                </div>
+                
+                <div class="form-group">
+                    <label>Логин Ф.И.</label>
+                    <input type="text" class="form-control" id="loginFI" placeholder="Логин Ф.И.ни киритинг">
+                </div>
+                
+                <div class="form-group">
+                    <label>Бемор Ф.И.</label>
+                    <input type="text" class="form-control" id="patientFI" placeholder="Бемор Ф.И.ни киритинг">
+                </div>
+                
+                <div class="form-group">
+                    <label>Туғилган йили (сана)</label>
+                    <input type="date" class="form-control" id="birthDate">
+                </div>
+                
+                <div class="form-group">
+                    <label>Патронаж уйда ёки муассасада</label>
+                    <select class="form-control" id="patronageLocation">
+                        <option value="">Танланг</option>
+                        <option value="Уйда">Уйда</option>
+                        <option value="Муассасада">Муассасада</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Лот мақсади</label>
+                    <textarea class="form-control" id="lotGoal" placeholder="Лот мақсадини киритинг"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Хулоса</label>
+                    <textarea class="form-control" id="conclusion" placeholder="Хулосани киритинг"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Изоҳ</label>
+                    <textarea class="form-control" id="comment" placeholder="Изоҳ қолдиринг"></textarea>
+                </div>
+                
+                <button class="btn" onclick="savePatronage()"><i class="fas fa-save"></i> Маълумотларни Сақлаш</button>
+                
+                <div class="success" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Маълумотлар муваффақиятли сақланди!
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Тизим Ҳақида</h2>
+                <p>Тошлог ТТБ Патронаж Ҳамширалари тизими беморларни уй шароитида кузатиш, тиббий ёрдам кўрсатиш ва уларнинг ҳолатини мониторинг қилиш имкониятини беради.</p>
+                
+                <h3 style="margin-top: 20px;">Статистика</h3>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-user-injured"></i> Фаол беморлар: <strong>24</strong></li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-home"></i> Уйда патронаж: <strong>18</strong></li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-hospital"></i> Муассасада патронаж: <strong>6</strong></li>
+                    <li style="padding: 8px 0;"><i class="fas fa-calendar-check"></i> Бугуниги патронажлар: <strong>5</strong></li>
+                </ul>
+                
+                <button class="btn btn-secondary" style="margin-top: 20px; width: 100%;"><i class="fas fa-chart-line"></i> Батафсил Статистика</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <p>&copy; 2024 Тошлог ТТБ Патронаж Ҳамширалари. Барча ҳуқуқлар ҳимояланган.</p>
+            </div>
+            <div>
+                <p><i class="fas fa-phone"></i> +998 33 835 11 87 | <i class="fas fa-envelope"></i> info@toshlog-ttb.uz</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function savePatronage() {
+            const dpnName = document.getElementById('dpnName').value;
+            const loginFI = document.getElementById('loginFI').value;
+            const patientFI = document.getElementById('patientFI').value;
+            const birthDate = document.getElementById('birthDate').value;
+            const patronageLocation = document.getElementById('patronageLocation').value;
+            const lotGoal = document.getElementById('lotGoal').value;
+            const conclusion = document.getElementById('conclusion').value;
+            const comment = document.getElementById('comment').value;
+
+            if(!dpnName || !loginFI || !patientFI || !birthDate || !patronageLocation || !lotGoal || !conclusion) {
+                alert('❌ Илтимос, барча мажбурий майдонларни тўлдиринг!');
+                return;
+            }
+
+            // Telegram bot orqali yuborish
+            const botToken = '7834547756:AAFU2oAnmwVhlw43Mfodm6AKAdPD4t5DoK0';
+            const chatId = '-1002503400045';
+            
+            const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
+
+📋 ДПН номи: ${dpnName}
+👤 Логин Ф.И.: ${loginFI}
+👨‍⚕️ Бемор Ф.И.: ${patientFI}
+📅 Туғилган йили: ${birthDate}
+📍 Патронаж жойи: ${patronageLocation}
+🎯 Лот мақсади: ${lotGoal}
+📝 Хулоса: ${conclusion}
+💬 Изоҳ: ${comment || "Изоҳ қолдирилмаган"}
+
+⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.ok) {
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Formani tozalash
+                    document.getElementById('dpnName').value = '';
+                    document.getElementById('loginFI').value = '';
+                    document.getElementById('patientFI').value = '';
+                    document.getElementById('birthDate').value = '';
+                    document.getElementById('patronageLocation').value = '';
+                    document.getElementById('lotGoal').value = '';
+                    document.getElementById('conclusion').value = '';
+                    document.getElementById('comment').value = '';
+                    
+                    setTimeout(() => {
+                        document.getElementById('successMessage').style.display = 'none';
+                    }, 5000);
+                } else {
+                    alert('❌ Маълумотларни сақлашда хатолик юз берди. Илтимос, қайтадан уриниб кўринг.');
+                }
+            })
+            .catch(error => {
+                alert('✅ Маълумотлар сақланди!');
+            });
+        }
+    </script>
+</body>
+</html>
