@@ -173,7 +173,7 @@
     <footer>
         <div class="container footer-content">
             <div>
-                <p>&copy; 2024 Тошлоқ ТТБ Патронаж Ҳамширалари. Барча ҳуқуқлар ҳимояланган.</p>
+                <p>&copy; 2025 Тошлоқ ТТБ Патронаж Ҳамширалари. Барча ҳуқуқлар ҳимояланган.</p>
             </div>
         </div>
     </footer>
@@ -183,7 +183,7 @@
 
         function getLocation() {
             if (!navigator.geolocation) {
-                alert("❌ Браузерингиз жойлашувни қўлламayди");
+                alert("❌ Браузерингиз жойлашувни қўллаб-қувватламайди");
                 return;
             }
 
@@ -221,7 +221,7 @@
                             errorMessage += "Жойлашув маълумотлари мавжуд эмас";
                             break;
                         case error.TIMEOUT:
-                            errorMessage += "Жойлашувни олиш вақти tugadi";
+                            errorMessage += "Жойлашувни олиш вақти тугади";
                             break;
                         default:
                             errorMessage += "Номаълум хатолик";
@@ -231,6 +231,7 @@
                     alert(errorMessage);
                     locationBtn.innerHTML = originalText;
                     locationBtn.disabled = false;
+                    locationBtn.style.background = '#FF9F43'; // Қайта тиклаш
                 },
                 {
                     enableHighAccuracy: true,
@@ -241,18 +242,18 @@
         }
 
         function savePatronage() {
-            // Xabarlarni tozalash
+            // Хабарларни тозалаш
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
 
-            const dpnName = document.getElementById('dpnName').value;
-            const loginFI = document.getElementById('loginFI').value;
-            const patientFI = document.getElementById('patientFI').value;
+            const dpnName = document.getElementById('dpnName').value.trim();
+            const loginFI = document.getElementById('loginFI').value.trim();
+            const patientFI = document.getElementById('patientFI').value.trim();
             const birthDate = document.getElementById('birthDate').value;
             const patronageLocation = document.getElementById('patronageLocation').value;
-            const lotGoal = document.getElementById('lotGoal').value;
-            const conclusion = document.getElementById('conclusion').value;
-            const comment = document.getElementById('comment').value;
+            const lotGoal = document.getElementById('lotGoal').value.trim();
+            const conclusion = document.getElementById('conclusion').value.trim();
+            const comment = document.getElementById('comment').value.trim();
 
             if(!dpnName || !loginFI || !patientFI || !birthDate || !patronageLocation || !lotGoal || !conclusion) {
                 alert('❌ Илтимос, барча мажбурий майдонларни тўлдиринг!');
@@ -270,12 +271,12 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Юборилмоқда...';
             submitBtn.disabled = true;
 
-            // Telegram bot orqali yuborish
+            // Telegram bot орқали юбориш (группа ID сини ўзингизнинг тўғри гуруҳ ID га ўзгартиринг, масалан: -1001234567890)
             const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
-            const chatId = '1004819414842';
+            const chatId = '-1004819414842'; // Бу фойдаланувчи ID, гуруҳ учун -100XXXXXXXXXX шаклида ўзгартиринг
             
             const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
-            const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)}`;
+            const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (аниқлик: ${userLocation.accuracy.toFixed(0)} м)`;
             
             const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
 
@@ -295,7 +296,7 @@
 
             console.log('Telegram хабар:', message);
 
-            // Telegram API ga so'rov yuborish
+            // Аввал матнли хабарни юбориш
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: {
@@ -304,35 +305,60 @@
                 body: JSON.stringify({
                     chat_id: chatId,
                     text: message,
-                    parse_mode: 'HTML'
+                    parse_mode: 'Markdown' // Markdown га ўзгартирилди, HTML ўрнига
                 })
             })
             .then(response => {
                 console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 return response.json();
             })
             .then(data => {
                 console.log('Telegram response:', data);
                 
                 if(data.ok) {
-                    showSuccessMessage();
-                    userLocation = null; // Жойлашувни тозалаш
-                    document.getElementById('locationStatus').style.display = 'none';
-                    
-                    // Жойлашув тугмасини қайта тиклаш
-                    const locationBtn = document.querySelector('.btn-location');
-                    locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш';
-                    locationBtn.disabled = false;
-                    locationBtn.style.background = '#FF9F43';
-                    
+                    // Кейин жойлашувни алоҳида юбориш (location message)
+                    return fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            latitude: userLocation.latitude,
+                            longitude: userLocation.longitude
+                        })
+                    });
                 } else {
-                    document.getElementById('errorMessage').style.display = 'block';
-                    console.error('Telegram error:', data);
+                    throw new Error('Telegram xatosi: ' + data.description);
                 }
             })
+            .then(locationResponse => {
+                if (locationResponse) {
+                    console.log('Location sent status:', locationResponse.status);
+                    return locationResponse.json();
+                }
+            })
+            .then(locationData => {
+                if (locationData && locationData.ok) {
+                    console.log('Location sent successfully');
+                }
+                showSuccessMessage();
+                userLocation = null; // Жойлашувни тозалаш
+                document.getElementById('locationStatus').style.display = 'none';
+                
+                // Жойлашув тугмасини қайта тиклаш
+                const locationBtn = document.querySelector('.btn-location');
+                locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш';
+                locationBtn.disabled = false;
+                locationBtn.style.background = '#FF9F43';
+            })
             .catch(error => {
-                console.error('Xatolik:', error);
+                console.error('Хатолик:', error);
                 document.getElementById('errorMessage').style.display = 'block';
+                alert('❌ Юборишда хатолик: ' + error.message);
             })
             .finally(() => {
                 // Тугмани қайта тиклаш
@@ -344,7 +370,7 @@
         function showSuccessMessage() {
             document.getElementById('successMessage').style.display = 'block';
             
-            // Formani tozalash
+            // Формани тозалаш
             document.getElementById('dpnName').value = '';
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
@@ -359,7 +385,7 @@
             }, 5000);
         }
 
-        // Sayt yuklanganda konsolga xabar chiqarish
+        // Сайт юкланганда консолга хабар чиқариш
         console.log('Toshloq TTB Patronaj sayti yuklandi');
     </script>
 </body>
