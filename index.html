@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toshloq TTB Patronaj Hamshiralari</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -43,6 +43,9 @@
         
         footer { background: #2c3e50; color: white; padding: 30px 0; margin-top: 50px; }
         .footer-content { display: flex; justify-content: space-between; align-items: center; }
+        .footer-contact { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
+        .footer-contact a { color: white; text-decoration: none; font-weight: 500; }
+        .footer-contact a:hover { text-decoration: underline; }
         
         .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
         .location-status { background: #d1ecf1; color: #0c5460; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; }
@@ -52,7 +55,8 @@
             .header-content { flex-direction: column; text-align: center; }
             nav ul { margin-top: 15px; }
             nav ul li { margin: 0 10px; }
-            .footer-content { flex-direction: column; text-align: center; }
+            .footer-content { flex-direction: column; text-align: center; gap: 10px; }
+            .footer-contact { justify-content: center; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -174,6 +178,10 @@
         <div class="container footer-content">
             <div>
                 <p>&copy; 2025 Тошлоқ ТТБ Патронаж Ҳамширалари. Барча ҳуқуқлар ҳимояланган.</p>
+            </div>
+            <div class="footer-contact">
+                <i class="fas fa-phone"></i>
+                <a href="tel:+998338351187">+998 33 835 11 87</a> (Elyorbek)
             </div>
         </div>
     </footer>
