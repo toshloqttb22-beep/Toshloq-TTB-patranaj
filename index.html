@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device=device-width, initial-scale=1.0">
     <title>Toshloq TTB Patronaj Hamshiralari</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -268,15 +268,15 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Юборилмоқда...';
             submitBtn.disabled = true;
 
-            // Telegram bot токени ва гуруҳ ID'сини ўзингизнинг тўғри қийматларингиз билан алмаштиринг!
+            // Telegram bot токени (ўзгартирманг!)
             const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
-            const chatId = '-1004819414842'; // ГУРУҲ УЧУН: -100XXXXXXXXXX шаклида ўзгартиринг (масалан, -1001234567890)
+            // Гуруҳ ID'си (сиз берган ID билан янгиланди)
+            const chatId = '-1003171974281';
             
             const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
             const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (аниқлик: ${userLocation.accuracy.toFixed(0)} м)`;
             
-            // HTML формати учун хабарни тайёрлаш (махсус белгиларни экранирлаш)
-            const message = `<b>🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ</b>
+            const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
 
 📋 ДПН номи: ${dpnName}
 👤 Ходим Ф.И.: ${loginFI}
@@ -288,74 +288,63 @@
 💬 Изоҳ: ${comment || "Изоҳ қолдирилмаган"}
 
 🗺️ ${locationText}
-🔗 <a href="${locationLink}">Харита</a>
+🔗 Харита: ${locationLink}
 
 ⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
 
-            console.log('Telegram хабар:', message);
-            console.log('Chat ID:', chatId); // Консолда ID'ни текшириш учун
+            console.log('Хабар тексти:', message);
+            console.log('Chat ID (гуруҳ учун минус билан):', chatId);
+            console.log('Токен (қисқача):', botToken.substring(0, 20) + '...');
 
+            // Аввал матнли хабарни юбориш
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML'
+                    text: message
                 })
             })
             .then(response => {
                 console.log('Response status:', response.status);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 return response.json();
             })
             .then(data => {
-                console.log('Telegram response:', data);
+                console.log('Telegram жавоби:', data);
+                if (!data.ok) throw new Error(data.description || 'Номаълум хатолик');
                 
-                if(data.ok) {
-                    // Жойлашувни алоҳида юбориш
-                    return fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            chat_id: chatId,
-                            latitude: userLocation.latitude,
-                            longitude: userLocation.longitude
-                        })
-                    });
-                } else {
-                    throw new Error('Telegram xatosi: ' + (data.description || 'Номаълум'));
+                // Кейин жойлашувни юбориш
+                return fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        latitude: userLocation.latitude,
+                        longitude: userLocation.longitude
+                    })
+                });
+            })
+            .then(locResponse => {
+                if (locResponse) {
+                    console.log('Жойлашув status:', locResponse.status);
+                    return locResponse.json();
                 }
             })
-            .then(locationResponse => {
-                if (locationResponse) {
-                    console.log('Location sent status:', locationResponse.status);
-                    return locationResponse ? locationResponse.json() : null;
-                }
-            })
-            .then(locationData => {
-                if (locationData && !locationData.ok) {
-                    console.warn('Location xatosi:', locationData.description);
-                }
+            .then(locData => {
+                if (locData && !locData.ok) console.warn('Жойлашув хатоси:', locData.description);
                 showSuccessMessage();
                 userLocation = null;
                 document.getElementById('locationStatus').style.display = 'none';
-                
                 const locationBtn = document.querySelector('.btn-location');
                 locationBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш';
-                locationBtn.disabled = false;
                 locationBtn.style.background = '#FF9F43';
+                locationBtn.disabled = false;
             })
             .catch(error => {
-                console.error('Хатолик:', error);
+                console.error('Хатолик (консолда кўринг):', error);
                 document.getElementById('errorMessage').style.display = 'block';
-                alert('❌ Юборишда хатолик: ' + error.message + '\n\nТекширинг: бот токени, гуруҳ ID ва бот гуруҳда админ эканлигини.');
+                alert('❌ Хатолик: ' + error.message + '\n\nКонсол (F12) ни очиб, жавобни текширинг!');
             })
             .finally(() => {
                 submitBtn.innerHTML = originalBtnText;
@@ -365,7 +354,6 @@
 
         function showSuccessMessage() {
             document.getElementById('successMessage').style.display = 'block';
-            
             document.getElementById('dpnName').value = '';
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
@@ -374,13 +362,10 @@
             document.getElementById('lotGoal').value = '';
             document.getElementById('conclusion').value = '';
             document.getElementById('comment').value = '';
-            
-            setTimeout(() => {
-                document.getElementById('successMessage').style.display = 'none';
-            }, 5000);
+            setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
         }
 
-        console.log('Toshloq TTB Patronaj sayti yuklandi');
+        console.log('Сайт юкланди – ID ўзгартирилди: -1003171974281');
     </script>
 </body>
 </html>
