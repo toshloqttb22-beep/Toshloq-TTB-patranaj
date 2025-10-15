@@ -107,8 +107,13 @@
                 </div>
                 
                 <div class="form-group">
+                    <label>Бемор телефони</label>
+                    <input type="tel" class="form-control" id="patientPhone" placeholder="+998 XX XXX XX XX">
+                </div>
+                
+                <div class="form-group">
                     <label>Туғилган йили (сана)</label>
-                    <input type="date" class="form-control" id="birthDate">
+                    <input type="text" class="form-control" id="birthDate" placeholder="YYYY-MM-DD форматида киритинг (масалан: 1990-01-01)">
                 </div>
                 
                 <div class="form-group">
@@ -255,7 +260,8 @@
             const dpnName = document.getElementById('dpnName').value.trim();
             const loginFI = document.getElementById('loginFI').value.trim();
             const patientFI = document.getElementById('patientFI').value.trim();
-            const birthDate = document.getElementById('birthDate').value;
+            const patientPhone = document.getElementById('patientPhone').value.trim();
+            const birthDate = document.getElementById('birthDate').value.trim();
             const patronageLocation = document.getElementById('patronageLocation').value;
             const lotGoal = document.getElementById('lotGoal').value.trim();
             const conclusion = document.getElementById('conclusion').value.trim();
@@ -289,6 +295,7 @@
 📋 ДПН номи: ${dpnName}
 👤 Ходим Ф.И.: ${loginFI}
 👨‍⚕️ Бемор Ф.И.: ${patientFI}
+📞 Бемор телефони: ${patientPhone || "Телефон рақами кiritилмаган"}
 📅 Туғилган йили: ${birthDate}
 📍 Патронаж жойи: ${patronageLocation}
 🎯 Патронаж мақсади: ${lotGoal}
@@ -365,6 +372,7 @@
             document.getElementById('dpnName').value = '';
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
+            document.getElementById('patientPhone').value = '';
             document.getElementById('birthDate').value = '';
             document.getElementById('patronageLocation').value = '';
             document.getElementById('lotGoal').value = '';
