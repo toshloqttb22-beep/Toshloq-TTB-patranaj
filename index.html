@@ -39,6 +39,8 @@
         .form-control:invalid { border-color: #dc3545; }
         textarea.form-control { height: 120px; resize: vertical; }
         select.form-control { padding: 10px 15px; }
+        .date-group { display: flex; gap: 10px; }
+        .date-group .form-control { flex: 1; }
         
         .btn { background: #2E86DE; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; margin: 5px; }
         .btn:hover { background: #1a6fc6; }
@@ -88,6 +90,7 @@
             .hero h1 { font-size: 2rem; }
             .nurse-info { flex-direction: column; }
             .modal-content { width: 95%; margin: 10% auto; }
+            .date-group { flex-direction: column; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -158,8 +161,12 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Бемор туғилган йили</label>
-                    <input type="number" class="form-control" id="patientBirthYear" placeholder="YYYY (масалан: 1990)" min="1900" max="2025">
+                    <label>Бемор туғилган санаси</label>
+                    <div class="date-group">
+                        <input type="number" class="form-control" id="birthDay" placeholder="Кун (1-31)" min="1" max="31">
+                        <input type="number" class="form-control" id="birthMonth" placeholder="Ой (1-12)" min="1" max="12">
+                        <input type="number" class="form-control" id="birthYear" placeholder="Йил (1900-2025)" min="1900" max="2025">
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -645,7 +652,9 @@
             const dpnName = document.getElementById('dpnName').value.trim();
             const loginFI = document.getElementById('loginFI').value.trim();
             const patientFI = document.getElementById('patientFI').value.trim();
-            const patientBirthYear = document.getElementById('patientBirthYear').value.trim();
+            const birthDay = document.getElementById('birthDay').value.trim();
+            const birthMonth = document.getElementById('birthMonth').value.trim();
+            const birthYear = document.getElementById('birthYear').value.trim();
             const patientPhone = document.getElementById('patientPhone').value.trim();
             const patronageLocation = document.getElementById('patronageLocation').value;
             const lotGoal = document.getElementById('lotGoal').value.trim();
@@ -673,12 +682,14 @@
             const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
             const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (аниқлик: ${userLocation.accuracy.toFixed(0)} м)`;
             
+            const birthDateStr = (birthDay && birthMonth && birthYear) ? `${birthDay}.${birthMonth}.${birthYear}` : "Кiritилмаган";
+            
             const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
 
 📋 ДПН номи: ${dpnName}
 👤 Ходим Ф.И.: ${loginFI}
 👨‍⚕️ Бемор Ф.И.: ${patientFI}
-👶 Бемор туғилган йили: ${patientBirthYear || "Кiritилмаган"}
+👶 Бемор туғилган санаси: ${birthDateStr}
 📞 Бемор телефони: ${patientPhone || "Телефон рақами кiritилмаган"}
 📍 Патронаж жойи: ${patronageLocation}
 🎯 Патронаж мақсади: ${lotGoal}
@@ -741,7 +752,9 @@
             document.getElementById('dpnName').value = '';
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
-            document.getElementById('patientBirthYear').value = '';
+            document.getElementById('birthDay').value = '';
+            document.getElementById('birthMonth').value = '';
+            document.getElementById('birthYear').value = '';
             document.getElementById('patientPhone').value = '';
             document.getElementById('patronageLocation').value = '';
             document.getElementById('lotGoal').value = '';
