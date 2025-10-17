@@ -158,6 +158,11 @@
                 </div>
                 
                 <div class="form-group">
+                    <label>Бемор туғилган йили</label>
+                    <input type="number" class="form-control" id="patientBirthYear" placeholder="YYYY (масалан: 1990)" min="1900" max="2025">
+                </div>
+                
+                <div class="form-group">
                     <label>Бемор телефони</label>
                     <input type="tel" class="form-control" id="patientPhone" placeholder="+998 XX XXX XX XX">
                 </div>
@@ -640,6 +645,7 @@
             const dpnName = document.getElementById('dpnName').value.trim();
             const loginFI = document.getElementById('loginFI').value.trim();
             const patientFI = document.getElementById('patientFI').value.trim();
+            const patientBirthYear = document.getElementById('patientBirthYear').value.trim();
             const patientPhone = document.getElementById('patientPhone').value.trim();
             const patronageLocation = document.getElementById('patronageLocation').value;
             const lotGoal = document.getElementById('lotGoal').value.trim();
@@ -672,6 +678,7 @@
 📋 ДПН номи: ${dpnName}
 👤 Ходим Ф.И.: ${loginFI}
 👨‍⚕️ Бемор Ф.И.: ${patientFI}
+👶 Бемор туғилган йили: ${patientBirthYear || "Кiritилмаган"}
 📞 Бемор телефони: ${patientPhone || "Телефон рақами кiritилмаган"}
 📍 Патронаж жойи: ${patronageLocation}
 🎯 Патронаж мақсади: ${lotGoal}
@@ -734,6 +741,7 @@
             document.getElementById('dpnName').value = '';
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
+            document.getElementById('patientBirthYear').value = '';
             document.getElementById('patientPhone').value = '';
             document.getElementById('patronageLocation').value = '';
             document.getElementById('lotGoal').value = '';
