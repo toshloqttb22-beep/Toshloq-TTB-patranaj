@@ -10,7 +10,7 @@
         
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        header { background: linear-gradient(135deg, #2E86DE, #1a6fc6); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        header { background: linear-gradient(135deg, #2E86DE, #1a6fc6); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.8rem; font-weight: bold; display: flex; align-items: center; }
         .logo i { margin-right: 10px; font-size: 2rem; }
@@ -18,6 +18,10 @@
         nav ul li { margin-left: 25px; }
         nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         nav ul li a:hover { opacity: 0.8; }
+        
+        .admin-panel { background: #10AC84; color: white; padding: 10px; text-align: center; display: none; margin-bottom: 10px; border-radius: 5px; }
+        .admin-panel h3 { margin-bottom: 5px; }
+        .admin-list { font-size: 0.9rem; }
         
         .hero { background: white; padding: 60px 0; text-align: center; border-radius: 0 0 15px 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: #2c3e50; }
@@ -32,14 +36,21 @@
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
         .form-control { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
         .form-control:focus { border-color: #2E86DE; outline: none; }
+        .form-control:invalid { border-color: #dc3545; }
         textarea.form-control { height: 120px; resize: vertical; }
+        select.form-control { padding: 10px 15px; }
         
-        .btn { background: #2E86DE; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; }
+        .btn { background: #2E86DE; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; margin: 5px; }
         .btn:hover { background: #1a6fc6; }
+        .btn:disabled { background: #6c757d; cursor: not-allowed; }
         .btn-secondary { background: #10AC84; }
         .btn-secondary:hover { background: #0D8C6B; }
         .btn-location { background: #FF9F43; }
         .btn-location:hover { background: #FF8C29; }
+        .btn-nurses { background: #FF6B6B; width: 100%; }
+        .btn-nurses:hover { background: #FF5252; }
+        .btn-login { background: #9C27B0; }
+        .btn-login:hover { background: #7B1FA2; }
         
         footer { background: #2c3e50; color: white; padding: 30px 0; margin-top: 50px; }
         .footer-content { display: flex; justify-content: space-between; align-items: center; }
@@ -47,9 +58,26 @@
         .footer-contact a { color: white; text-decoration: none; font-weight: 500; }
         .footer-contact a:hover { text-decoration: underline; }
         
-        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
-        .location-status { background: #d1ecf1; color: #0c5460; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; }
-        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; border: 1px solid #c3e6cb; }
+        .location-status { background: #d1ecf1; color: #0c5460; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; border: 1px solid #bee5eb; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; border: 1px solid #f5c6cb; }
+        
+        .nurse-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 5% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 600px; max-height: 80%; overflow-y: auto; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close:hover { color: #000; }
+        .nurse-details { margin-top: 20px; }
+        .nurse-details h3 { color: #2c3e50; margin-bottom: 10px; }
+        .nurse-info { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        
+        .stats-section { margin-bottom: 30px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        
+        .nurse-list { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
+        .nurse-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; }
+        .nurse-item:hover { background: #f8f9fa; }
+        .nurse-item h4 { margin-bottom: 5px; color: #2E86DE; }
+        .nurse-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
         
         @media (max-width: 768px) {
             .header-content { flex-direction: column; text-align: center; }
@@ -57,6 +85,9 @@
             nav ul li { margin: 0 10px; }
             .footer-content { flex-direction: column; text-align: center; gap: 10px; }
             .footer-contact { justify-content: center; }
+            .hero h1 { font-size: 2rem; }
+            .nurse-info { flex-direction: column; }
+            .modal-content { width: 95%; margin: 10% auto; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -77,33 +108,53 @@
                 </ul>
             </nav>
         </div>
+        <div class="admin-panel" id="adminPanel">
+            <h3><i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари (17-октябрь, 2025)</h3>
+            <div class="admin-list" id="todayNurses"></div>
+        </div>
     </header>
 
     <section class="hero">
         <div class="container">
             <h1>Тиббий Патронаж Тизими</h1>
             <p>Беморларни уй шароитида кузатиш ва тиббий ёрдам кўрсатиш</p>
+            <button class="btn btn-login" onclick="loginAdmin()">Админ кириш</button>
+            <button class="btn btn-nurses" onclick="openNursesModal()">Ҳамширалар рўйхати</button>
         </div>
     </section>
 
     <div class="container">
+        <div class="stats-section">
+            <h2 style="text-align: center; margin-bottom: 20px;">Статистика</h2>
+            <div class="stats-grid">
+                <div class="card">
+                    <h3>Жойлашувлар бўйича топ-10</h3>
+                    <canvas id="locationChart" width="400" height="200"></canvas>
+                </div>
+                <div class="card">
+                    <h3>МФЙлар бўйича топ-10</h3>
+                    <canvas id="mfyChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
         <div class="dashboard">
             <div class="card">
                 <h2><i class="fas fa-plus-circle"></i> Янги Патронаж Қўшиш</h2>
                 
                 <div class="form-group">
-                    <label>ДПН номи</label>
-                    <input type="text" class="form-control" id="dpnName" placeholder="ДПН номини киритинг">
+                    <label>ДПН номи *</label>
+                    <input type="text" class="form-control" id="dpnName" placeholder="ДПН номини киритинг" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Ходим Ф.И.</label>
-                    <input type="text" class="form-control" id="loginFI" placeholder="Ходим Ф.И.ни киритинг">
+                    <label>Ходим Ф.И. *</label>
+                    <input type="text" class="form-control" id="loginFI" placeholder="Ходим Ф.И.ни киритинг" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Бемор Ф.И.</label>
-                    <input type="text" class="form-control" id="patientFI" placeholder="Бемор Ф.И.ни киритинг">
+                    <label>Бемор Ф.И. *</label>
+                    <input type="text" class="form-control" id="patientFI" placeholder="Бемор Ф.И.ни киритинг" required>
                 </div>
                 
                 <div class="form-group">
@@ -112,13 +163,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Туғилган йили (сана)</label>
-                    <input type="text" class="form-control" id="birthDate" placeholder="YYYY-MM-DD форматида киритинг (масалан: 1990-01-01)">
+                    <label>Туғилган йили (сана) *</label>
+                    <input type="date" class="form-control" id="birthDate" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>Патронаж уйда ёки муассасада</label>
-                    <select class="form-control" id="patronageLocation">
+                    <label>Патронаж уйда ёки муассасада *</label>
+                    <select class="form-control" id="patronageLocation" required>
                         <option value="">Танланг</option>
                         <option value="Уйда">Уйда</option>
                         <option value="Муассасада">Муассасада</option>
@@ -126,13 +177,13 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Патронаж мақсади</label>
-                    <textarea class="form-control" id="lotGoal" placeholder="Патронаж мақсадини киритинг"></textarea>
+                    <label>Патронаж мақсади *</label>
+                    <textarea class="form-control" id="lotGoal" placeholder="Патронаж мақсадини киритинг" required></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label>Хулоса</label>
-                    <textarea class="form-control" id="conclusion" placeholder="Хулосани киритинг"></textarea>
+                    <label>Хулоса *</label>
+                    <textarea class="form-control" id="conclusion" placeholder="Хулосани киритинг" required></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -141,7 +192,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Жойлашув</label>
+                    <label>Жойлашув *</label>
                     <button type="button" class="btn btn-location" onclick="getLocation()" style="width: 100%;">
                         <i class="fas fa-map-marker-alt"></i> Жойлашувни Олиш
                     </button>
@@ -165,7 +216,7 @@
             
             <div class="card">
                 <h2><i class="fas fa-info-circle"></i> Тизим Ҳақида</h2>
-                <p>Тошлоқ ТТБ Патронаж Ҳамширалари тизими беморларни уй шароитида кузатиш, тиббий ёрдам кўрсатиш ва уларнинг ҳолатини мониторинг қилиш имкониятини беради.</p>
+                <p>Тошлоқ ТТБ Патронаж Ҳамширалари тизими беморларни уй шароитида кузатиш, тиббий ёрдам кўрсатиш ва уларнинг ҳолатини мониторинг қилиш имкониятини беради. Windows учун оптималлаштирилган – тез юкланиш ва содда интерфейс.</p>
                 
                 <h3 style="margin-top: 20px;">Иш тартиби</h3>
                 <ul style="list-style-type: none; padding-left: 0;">
@@ -176,6 +227,16 @@
                     <li style="padding: 8px 0;"><i class="fas fa-check-circle"></i> Хулоса ва изоҳ қолдириш</li>
                 </ul>
             </div>
+        </div>
+    </div>
+
+    <!-- Ҳамширалар модали -->
+    <div id="nursesModal" class="nurse-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNursesModal()">&times;</span>
+            <h2>Ҳамширалар рўйхати</h2>
+            <ul class="nurse-list" id="nurseList"></ul>
+            <div id="nurseDetails" class="nurse-details" style="display: none;"></div>
         </div>
     </div>
 
@@ -191,8 +252,314 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let userLocation = null;
+        let isAdmin = false;
+        const data = [
+            {"name": "Абдухоликова Мафтуна", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
+            {"name": "Юсупова Гузал", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
+            {"name": "Иброхимова Муяссар", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 425 Шодлик МФЙ дан 1575"},
+            {"name": "Назирджонова Дилдора", "location": "Тошлок КТМП", "mfy": "Шодлик МФЙ дан 2000"},
+            {"name": "Хакимова Нозима", "location": "Тошлок КТМП", "mfy": "Шодлик МФЙ дан 881 Сувбоши МФЙ дан 1119"},
+            {"name": "Марипова Гулшаной", "location": "Тошлок КТМП", "mfy": "Сувбоши МФЙ дан 2000"},
+            {"name": "Шералиева Этибор", "location": "Тошлок КТМП", "mfy": "Сувбоши МФЙ дан 1718 Фуркат МФЙ дан 282"},
+            {"name": "Орипова Максуда", "location": "Тошлок КТМП", "mfy": "Фуркат МФЙ дан 2000"},
+            {"name": "Кодирова Дилноза", "location": "Тошлок КТМП", "mfy": "Фуркат МФЙ дан 2063"},
+            {"name": "Болтабоева Наргиза", "location": "Тошлок КТМП", "mfy": "Дустлик МФЙ дан 2050"},
+            {"name": "Рахматова Мехринисо", "location": "Тошлок КТМП", "mfy": "Дустлик МФЙ дан 2064"},
+            {"name": "Турсунова Нигора", "location": "Тошлок КТМП", "mfy": "Сукчилик МФЙ дан 2000"},
+            {"name": "Ахмадалиева Дилрабо", "location": "Тошлок КТМП", "mfy": "Сукчилик МФЙ дан 2400"},
+            {"name": "Рустамова Дилрабо", "location": "Тошлок КТМП", "mfy": "Садда МФЙ 1966"},
+            {"name": "Махмудова Гулнора", "location": "Тошлок КТМП", "mfy": "Садда МФЙ 2137"},
+            {"name": "Муминова Робия", "location": "Тошлок КТМП", "mfy": "Конизар МФЙ 2069"},
+            {"name": "Абдувахобова Лола", "location": "Тошлок КТМП", "mfy": "Конизар МФЙ 2133 та"},
+            {"name": "Мадазимова Мухаббат", "location": "Тошлок КТМП", "mfy": "Терак таги МФЙ 2311"},
+            {"name": "Муйдинова Нилуфар", "location": "Тошлок КТМП", "mfy": "Терак таги МФЙ 2582"},
+            {"name": "Каландарова Зумрад", "location": "Тошлок КТМП", "mfy": "Катта кўча МФЙ дан 2720"},
+            {"name": "Бойбоева Насиба", "location": "Тошлок КТМП", "mfy": "Катта кўча МФЙ дан 1940"},
+            {"name": "Собирова Мафтуна", "location": "Тошлок КТМП", "mfy": "Сўфилар МФЙ дан 2729"},
+            {"name": "Тешабоева Дилдора", "location": "Тошлок КТМП", "mfy": "Сўфилар МФЙ дан 2203"},
+            {"name": "Шерматова Гулнора", "location": "Тошлок КТМП", "mfy": " Хамрик МФЙ 1677"},
+            {"name": "Каримов Отабек", "location": "Тошлок КТМП", "mfy": "Хамрак МФЙ дан 1904"},
+            {"name": "Охунжонова Тургуной", "location": "Тошлок КТМП", "mfy": "yangi yo'l mfy"},
+            {"name": "Акрамова Орзунисо", "location": "Тошлок КТМП", "mfy": "yangi yo'l mfy"},
+            {"name": "Абдуллаева хакима", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Акбарова Нодира", "location": "Тошлок КТМП", "mfy": "chuqur qishloq mfy"},
+            {"name": "Комилова Гулноза", "location": "Тошлок КТМП", "mfy": "yangi yo'l mfy"},
+            {"name": "Журабоева Мухайё", "location": "Тошлок КТМП", "mfy": "yangi yo'l mfy"},
+            {"name": "Ахмедова Зилола", "location": "Тошлок КТМП", "mfy": "yangi yo'l mfy"},
+            {"name": "Сулаймонова Мавжуда", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Олимова Нилуфар", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Исакова Шахноза", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Усмонова Мухтасар", "location": "Тошлок КТМП", "mfy": "chuqur qishloq zarkent  mfy"},
+            {"name": "Холикова Хуршида", "location": "Тошлок КТМП", "mfy": "chuqur qishloq mfy"},
+            {"name": "Ортикова Нодира", "location": "Тошлок КТМП", "mfy": "chuqur qishloq mfy"},
+            {"name": "Кодирова Ёркиной", "location": "Тошлок КТМП", "mfy": "jar qishloq mfy"},
+            {"name": "Кодирова Шахноза", "location": "Тошлок КТМП", "mfy": "jar qishloq mfy"},
+            {"name": "Мадаминова Икболой", "location": "Тошлок КТМП", "mfy": "chuqur qishloq jar qishloq mfy"},
+            {"name": "Исмоилова Тулкиной", "location": "Тошлок КТМП", "mfy": "jar qishloq mfy"},
+            {"name": "Рустамова Наргиза", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Шербоева Ойдин", "location": "Тошлок КТМП", "mfy": "zarkent mfy"},
+            {"name": "Уктамова Мохира", "location": "Тошлок КТМП", "mfy": "chuqur qishloq Zarkent mfy"},
+            {"name": "Хусанова Мухайё", "location": "Тошлок КТМП", "mfy": "jar qishloq mfy"},
+            {"name": "Турдалиева Дилбар", "location": "Тошлок 52-ОП", "mfy": "Yakavut MFY"},
+            {"name": "Орипова Сайёра", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Уктамова Нилуфар", "location": "Тошлок 52-ОП", "mfy": "Yakavut MFY"},
+            {"name": "Нурматова Юлдуз", "location": "Тошлок 52-ОП", "mfy": "Yakavut MFY"},
+            {"name": "Акрамова Зиёда", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "To`tasinova Surayo", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Turdaliyeva Maftuna", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Foziljonova Latofat", "location": "Тошлок 52-ОП", "mfy": "Qanjirga MFY"},
+            {"name": "Abdullayeva Maxliyo", "location": "Тошлок 52-ОП", "mfy": "Qanjirga MFY"},
+            {"name": "Abdullayeva Sharofat", "location": "Тошлок 52-ОП", "mfy": "Axshak MFY"},
+            {"name": "Sultonova Dilfuza", "location": "Тошлок 52-ОП", "mfy": "Axshak MFY Qanjirga MFY"},
+            {"name": "Toxirova Xurxon", "location": "Тошлок 52-ОП", "mfy": "Axshak MFY"},
+            {"name": "Saydamatova Sharifa", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Kenjayeva Manzura", "location": "Тошлок 52-ОП", "mfy": "Сой буйи МФЙ"},
+            {"name": "Karimova Kamolat", "location": "Тошлок 52-ОП", "mfy": "Сой буйи МФЙ"},
+            {"name": "Bo`taboyeva Munojat", "location": "Тошлок 52-ОП", "mfy": "Сой буйи МФЙ"},
+            {"name": "Nematova Marxabo", "location": "Тошлок 52-ОП", "mfy": "Сой буйи МФЙ \\Учолиш МФЙ"},
+            {"name": "Nurmatova Shaxzoda", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
+            {"name": "Usmonova Muxabbat", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
+            {"name": "Rustamova Feruza", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
+            {"name": "Siddiqova Shaxnoza", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
+            {"name": "Xaydarova Shoxida", "location": "Тошлок 53-ОП", "mfy": "Куйи Яккатут МФЙ"},
+            {"name": "Sodiqova Shaxnoza", "location": "Тошлок 53-ОП", "mfy": "Куйи Яккатут МФЙ"},
+            {"name": "Karimova Ma`mura", "location": "Тошлок 53-ОП", "mfy": "Куйи Яккатут МФЙ"},
+            {"name": "Yusupova Nazokat", "location": "Тошлок 53-ОП", "mfy": "Сой буйи\\Хужакик МФЙ"},
+            {"name": "Yetmishova Manzura", "location": "Тошлок 53-ОП", "mfy": "Хужакик МФЙ"},
+            {"name": "Mamajonova Mamlakat  Axmedovna", "location": "Тошлок 53-ОП", "mfy": "Хужакик МФЙ"},
+            {"name": "Jo'rayeva Madina  Komilovna", "location": "Тошлок 53-ОП", "mfy": "Хужакик МФЙ"},
+            {"name": "O'lmasova Muborak  Allambayevna", "location": "Тошлок 54-ОП", "mfy": "УчолишМФЙ"},
+            {"name": "Abdurazzaqova Zuhra Xosiljonovna", "location": "Тошлок 54-ОП", "mfy": "УчолишМФЙ"},
+            {"name": "Ulug'nazarova Munojat  Abdullajonovna", "location": "Тошлок 54-ОП", "mfy": "ЧЕК МФЙ"},
+            {"name": "Saidikromova Sahobat  Xakimjon qizi", "location": "Тошлок 54-ОП", "mfy": "ЧЕК МФЙ"},
+            {"name": "Abdug'aniyeva Zulhumor  O'lmasdoy  qizi", "location": "Тошлок 54-ОП", "mfy": "ЧЕК МФЙ"},
+            {"name": "Turdiyeva Xovaxon Axmadovna", "location": "Тошлок 54-ОП", "mfy": "ЧЕК МФЙ"},
+            {"name": "Jamoldinova Sohiba  Shavkatjon qizi", "location": "Тошлок 54-ОП", "mfy": "НАЙМАН МФЙ"},
+            {"name": "Olimova Barno  Xamidjonovna", "location": "Тошлок 54-ОП", "mfy": "НАЙМАН МФЙ"},
+            {"name": "Xolmatova Maftuna  Muxtorjon qizi", "location": "Тошлок 54-ОП", "mfy": "НАЙМАН МФЙ"},
+            {"name": "Mirzajonova Dilshoda  Mamasidiq qizi", "location": "Тошлок 54-ОП", "mfy": "НАЙМАН МФЙ"},
+            {"name": "Karimova O'g'iloy Qaxramon qizi", "location": "Тошлок 54-ОП", "mfy": "ИСТИКЛОЛ МФЙ"},
+            {"name": "Аскарова Мастура Жураевна", "location": "Тошлок 54-ОП", "mfy": "ИСТИКЛОЛ МФЙ"},
+            {"name": "Жураева Шодия Сойибжон кизи", "location": "Тошлок 54-ОП", "mfy": "ИСТИКЛОЛ МФЙ"},
+            {"name": "Арзибобоева Турсиной Абдусаминовна", "location": "Тошлок 54-ОП", "mfy": "ИСТИКЛОЛ МФЙ"},
+            {"name": "Джабборова Зулхмор Иномжон кизи", "location": "Тошлок 54-ОП", "mfy": "Аабмозор МФЙ"},
+            {"name": "Тухтаназарова ЗахроМахаматовна", "location": "Тошлок 54-ОП", "mfy": "Аабмозор МФЙ"},
+            {"name": "Дадахужаева Гулнора Абдухамидовна", "location": "Тошлок 54-ОП", "mfy": "Аабмозор МФЙ"},
+            {"name": "Кимсанбоева Гулшаной Одилжон кизи", "location": "Тошлок 54-ОП", "mfy": "Аабмозор МФЙ"},
+            {"name": "Убайдуллаева Нигора Мухаммадсидик кизи", "location": "Тошлок 55-ОП", "mfy": "Аабмозор МФЙ"},
+            {"name": "Убайдуллаева Фарида Мухаммадсидик кизи", "location": "Тошлок 55-ОП", "mfy": "Хонака МФЙ"},
+            {"name": "Ортикова Тухтахон Абдулажоновна", "location": "Тошлок 55-ОП", "mfy": "Хонака МФЙ"},
+            {"name": "Абдубанопова Машхура Шерали кизи", "location": "Тошлок 55-ОП", "mfy": "Куларик мфй"},
+            {"name": "Матхоликова Файзилат Нематилло кизи", "location": "Тошлок 55-ОП", "mfy": "Куларик мфй"},
+            {"name": "Тоштемирова Гавхарой Абдумухтор кизи", "location": "Тошлок 55-ОП", "mfy": "Айламажар МФЙ"},
+            {"name": "Мухамадова Севара Дилшоджон кизи", "location": "Тошлок 55-ОП", "mfy": "Куларик мфй"},
+            {"name": "Усмонова Дилнавоз Умаржон кизи", "location": "Тошлок 55-ОП", "mfy": "Айламажар МФЙ"},
+            {"name": "Турдалиева Иноят \\Шералиевна", "location": "Тошлок 55-ОП", "mfy": "Айламажар МФЙ"},
+            {"name": "Жумашова Камолат Бердиевна", "location": "Тошлок 55-ОП", "mfy": "Қипчоқ-ариқ"},
+            {"name": "ХАЛИЛОВА МАШХУРА ХОЛДОРАЛИ ҚИЗИ", "location": "Тошлок 55-ОП", "mfy": "Қипчоқ-ариқ"},
+            {"name": "МИРЗАЕВА ЗАМИРА АХМАДЖОН ҚИЗИ", "location": "Тошлок 55-ОП", "mfy": "Варзак"},
+            {"name": "ЭМИНОВА НАЗОКАТ МАХСИТАЛИ КИЗИ", "location": "Тошлок 55-ОП", "mfy": "Варзак"},
+            {"name": "АБДУЛЛАЭВА ДИЛФУЗА ДАВРОНОВА", "location": "Тошлок 55-ОП", "mfy": "Варзак"},
+            {"name": "ТОЖИБОЭВА МУХАЙЕО ДАДАЖОНОВНА", "location": "Тошлок 55-ОП", "mfy": "Варзак"},
+            {"name": "МИРЗАЕВА МАХЛИЙО АБДУКАХХОРОВНА", "location": "Тошлок 56-ОП", "mfy": "Ўзбекистон"},
+            {"name": "ШЕРАЛИЕВА ОРЗИГУЛ НУРМУХАММАД КИЗИ", "location": "Тошлок 56-ОП", "mfy": "Ўзбекистон"},
+            {"name": "ХУЖАНАЗАРОВА Ирода ОЛМОС КИЗИ", "location": "Тошлок 56-ОП", "mfy": "Ўзбекистон"},
+            {"name": "БАКИРОВА ЗАРНИГОР АХМАДЖОНОВНА", "location": "Тошлок 56-ОП", "mfy": "Ўзбекистон"},
+            {"name": "МУЙДИНОВА СОХИБА ОРИБЖОНОВНА", "location": "Тошлок 56-ОП", "mfy": "Бўстон"},
+            {"name": "АХМЕДОВА ШОХИДА ДЖАЛОЛИДДИНОВА", "location": "Тошлок 56-ОП", "mfy": "Бўстон"},
+            {"name": "МУЛЛАЕВА НАСИБА НАБИЕВНА", "location": "Тошлок 56-ОП", "mfy": "Бўстон"},
+            {"name": "Хакимова Наргиза", "location": "Тошлок 56-ОП", "mfy": "Бўстон"},
+            {"name": "Марифжонова Магзуна", "location": "Тошлок 56-ОП", "mfy": "Кумарик МФЙ"},
+            {"name": "Рахимова Муаттар", "location": "Тошлок 56-ОП", "mfy": "Кумарик МФЙ"},
+            {"name": "Мамажонова Зулайхо", "location": "Тошлок 56-ОП", "mfy": "Кумарик МФЙ"},
+            {"name": "Собирова Мухаё", "location": "Тошлок 56-ОП", "mfy": "Кумарик МФЙ"},
+            {"name": "Zoxidova Dilobar", "location": "Тошлок 56-ОП", "mfy": "Фарогат МФЙ"},
+            {"name": "Муйдинова Дилноза", "location": "Тошлоқ 57-ОП", "mfy": "Фарогат МФЙ"},
+            {"name": "Абдурахмонова Зубайда", "location": "Тошлоқ 57-ОП", "mfy": "Фарогат МФЙ"},
+            {"name": "Ганиева Хилола", "location": "Тошлоқ 57-ОП", "mfy": "Фарогат МФЙ"},
+            {"name": "Нишонова Мохигул", "location": "Тошлоқ 57-ОП", "mfy": "Кумкишлок МФЙ"},
+            {"name": "Abduraximova Bashorat", "location": "Тошлоқ 57-ОП", "mfy": "Кумкишлок МФЙ"},
+            {"name": "Хаджаева Фотима", "location": "Тошлоқ 57-ОП", "mfy": "Обисё   МФЙ"},
+            {"name": "Исмоилова Зарнигор", "location": "Тошлоқ 57-ОП", "mfy": "Обисё   МФЙ"},
+            {"name": "Мўминова Жамила Иномжон қизи", "location": "Тошлоқ 57-ОП", "mfy": "Обисё   МФЙ"},
+            {"name": "Худобердиева Гулчехра Мўминжон қизи", "location": "Тошлоқ 57-ОП", "mfy": "Обисё   МФЙ"},
+            {"name": "Исроилова Одина Миркомил қизи", "location": "Тошлоқ 57-ОП", "mfy": "ХОНАКА МФЙ"},
+            {"name": "Сомидова Махфуза Абдуллаевна", "location": "Тошлоқ 57-ОП", "mfy": "ХОНАКА МФЙ"},
+            {"name": "Усмонова Мунира Сайдуллаевна", "location": "Тошлоқ 57-ОП", "mfy": "ХОНАКА МФЙ"},
+            {"name": "Парпиева Дилафруз Таваккал қизи", "location": "Тошлоқ 57-ОП", "mfy": "БЕСАРАНГ МФЙ"},
+            {"name": "Иброхимова Мавжуда Исроилжон қизи", "location": "Тошлоқ 57-ОП", "mfy": "БЕСАРАНГ МФЙ"},
+            {"name": "Абдурахмонова Ханифа Ғуломжон қизи", "location": "Тошлоқ 57-ОП", "mfy": "БЕСАРАНГ МФЙ"},
+            {"name": "Мамарўзиева Муножат Рахимовна", "location": "Тошлоқ 57-ОП", "mfy": "БЕСАРАНГ МФЙ"},
+            {"name": "Норматова Гулбахор Обиджоновна", "location": "Тошлоқ 57-ОП", "mfy": "БЕСАРАНГ МФЙ"},
+            {"name": "Хайдарова Маъмура Абдусаломовна", "location": "Тошлоқ 57-ОП", "mfy": "КУРГОНЧА МФЙ"},
+            {"name": "Тилаволдиева Шоиста Олимжон қизи", "location": "Тошлоқ 57-ОП", "mfy": "КУРГОНЧА МФЙ"},
+            {"name": "Мухтозова Чинора Усмоновна", "location": "Тошлоқ 93-ОП", "mfy": "КУРГОНЧА МФЙ"},
+            {"name": "Назарова Робахон Бўстонжон қизи", "location": "Тошлоқ 93-ОП", "mfy": "КУРГОНЧА МФЙ"},
+            {"name": "Маматкулова Махмуда Зайлобиддиновна", "location": "Тошлоқ 93-ОП", "mfy": "ПИЕ́ЗЧИЛИК МФЙ"},
+            {"name": "Миллажонова Умида Ортигалиевна", "location": "Тошлоқ 93-ОП", "mfy": "ПИЕ́ЗЧИЛИК МФЙ"},
+            {"name": "Ганийева Наргиза Акрамжоновна", "location": "Тошлоқ 93-ОП", "mfy": "ПИЕ́ЗЧИЛИК МФЙ"},
+            {"name": "Рустамова   Мукамал Тожиматовна", "location": "Тошлоқ 93-ОП", "mfy": "ПИЕ́ЗЧИЛИК МФЙ"},
+            {"name": "Кимсанбойева Хурсаной Одилжон кизи", "location": "Тошлоқ 93-ОП", "mfy": "КАМЧИФУРУШ МФЙ"},
+            {"name": "Мирзаева Рано Рахмоналиевна", "location": "Тошлоқ 93-ОП", "mfy": "КАМЧИФУРУШ МФЙ"},
+            {"name": "Давронова Нозима Рахматжон кизи", "location": "Тошлоқ 93-ОП", "mfy": "КАМЧИФУРУШ МФЙ"},
+            {"name": "Олимова Мохира Рустамжон кизи", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY"},
+            {"name": "Мирзахалилова Шохсанам Бахтиёржоновна", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY"},
+            {"name": "Алижонова Орзигул Усмонжон кизи", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY, Istiqlol MFY"},
+            {"name": "Муродилова Санобар Рахмоналиевна", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Naymanbo'ston MFY"},
+            {"name": "Алиева Мавлуда  Рустамовна", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY, Istiqlol MFY"},
+            {"name": "Шералиева Зиёда Арабжон кизи", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY"},
+            {"name": "Орифжонова Зилола Исломжон кизи", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Mehnatobod MFY, Istiqlol MFY Naymanbo'ston MFY"},
+            {"name": "КОРАБОЕВА РАНО ЭРКИНЖОН КИЗИ", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Ахшак мфй"},
+            {"name": "КОСИМОВА ДИЛБАРХОН ТУХТАРАЛИЕВНА", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Ахшак гузар МФЙ"},
+            {"name": "ХОМИДОВА НАФИСА ХОЛМУРОД КИЗИ", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Ахшак гузар МФЙ"},
+            {"name": "РАХИМОВА ИРОДА РУЗМАТОВНА", "location": "Тошлок тумани К.Абдувалиев ОШП", "mfy": "Ахшак гузар МФЙ"},
+            {"name": "ИСМОИЛОВА ШАХНОЗА АСКАРАЛИ КИЗИ", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Тоглик МФЙ"},
+            {"name": "BAKIROVA SHAXNOZA ANVARJONOVNA", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Тоглик МФЙ"},
+            {"name": "XUDOYBERDIYEVA SAN'ATOY IXTIYOR QIZI", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Тоглик МФЙ"},
+            {"name": "ABDULAZIZOVA XILOLA ABDUVAITOVNA", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Тоглик МФЙ"},
+            {"name": "Ахмедова Рузихон Мусинжон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Қанжирға МФЙ"},
+            {"name": "Охунова Дилрабо Кабуловна", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Қанжирға МФЙ"},
+            {"name": "Бойдадаева Юлдуз Парпиевна", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Лобиржонова Дилфуза Камолиддин кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Юсупова Мухтарам Боходиржон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Одилова Робия Муроджон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Худойбердиева Хамрохон Каримова", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Naymanboston MFY"},
+            {"name": "Мусаева Муминахон Тохиржон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Naymanboston MFY"},
+            {"name": "Хусанова Ойгул Абдурахмон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Кимсанова Рано Обиджон кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Юқори МФЙ"},
+            {"name": "Хомидова Матлуба Миркомил кизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Юқори МФЙ"},
+            {"name": "Qosimova Shahzoda Abdurahmonovna", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Юқори МФЙ"},
+            {"name": "Abdurahmonova Gulshoda Mashrapovna", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Турват МФЙ"},
+            {"name": "Ermatova Zilola Topvoldiyevna", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Турват МФЙ"},
+            {"name": "Turdiyeva Shoxida To'xtasinovna", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Турват МФЙ"},
+            {"name": "Qodirova Sadoqat Zoirjon qizi", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Турват МФЙ"},
+            {"name": "So'piyeva Gulsanam Yusufjon qizi", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Турват МФЙ"},
+            {"name": "Umarova Dilrabo Ro'zimatjon qizi", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Қалача МФЙ"},
+            {"name": "Қосимова Азиза Баходиржон қизи", "location": "Тошлок тумани Кургонча  ОШП", "mfy": "Қалача МФЙ"},
+            {"name": "Ахмедова Дилдора Сайипжоновна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Тошпўлатова Шахноза  Шавкатжоновна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Азаматова Зилола Жалолхон қизи", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Абдурахмонова Раьно Абдилбоқиевна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Ғопурова Гулчехра Нумоновна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Муртазаева Дилорам Жўрахўжаевна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Тошпўлатова Олима  Усмонжоновна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Каримова Шахноза Ибрагимовна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Ахмедова Зилола Шерматовна", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Mirzayeva Dilyora", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Mamajonova Otika", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Usmonova Iroda", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Axmedova Dildora", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Mamatojiyeva Dilfuza", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Masharipova Madina", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Mamazikirova Sharofat", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Тожибоева Гулмира Тилаволди қизи", "location": "Тошлок тумани Мехнатобод  ОШП", "mfy": "N/A"},
+            {"name": "Сайдаматова  Мадина  Икромжон қизи", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Тошпўлатова Хуснида   Абдурахмов қизи", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Турдибоева Одина  Рўзибоевна", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Джўрабоева  Зиёда Фозилжон қизи", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Абдурасулова Хурият   Абдумажид қизи", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Хасанова Дилдора Розил қизи", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Мирзахакимова Дилноза  Турдалиевна", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Тўхтасинова Хаётхон Юлдашевна", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"},
+            {"name": "Абдурахмонова Барно Нематжоновна", "location": "Тошлок тумани Тоглик   ОШП", "mfy": "N/A"}
+        ];
+
+        // Chart.js графикларини юклаш
+        const locationCtx = document.getElementById('locationChart').getContext('2d');
+        new Chart(locationCtx, {
+            type: 'bar',
+            data: {
+                labels: ["Тошлок КТМП", "Тошлок 52-ОП", "Тошлок 54-ОП", "Тошлоқ 57-ОП", "Тошлоқ 93-ОП", "Тошлок 53-ОП", "Тошлок 56-ОП", "Тошлок 55-ОП", "Тошлок тумани Кургонча ОШП", "Тошлок тумани Тоглик ОШП"],
+                datasets: [{
+                    label: "Сон",
+                    data: [52, 21, 17, 14, 14, 13, 13, 12, 11, 10],
+                    backgroundColor: ["#2E86DE", "#FF9F43", "#10AC84", "#FF6B6B", "#9C27B0", "#FF9800", "#4CAF50", "#F44336", "#3F51B5", "#FFC107"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+
+        const mfyCtx = document.getElementById('mfyChart').getContext('2d');
+        new Chart(mfyCtx, {
+            type: 'bar',
+            data: {
+                labels: ["zarkent mfy", "yangi yo'l mfy", "Xotinqumi MFY", "Аабмозор МФЙ", "БЕСАРАНГ МФЙ", "Xonariq MFY", "Турват МФЙ", "jar qishloq mfy", "Гузарбоши МФЙ", "ЧЕК МФЙ"],
+                datasets: [{
+                    label: "Сон",
+                    data: [6, 5, 5, 5, 5, 5, 5, 4, 4, 4],
+                    backgroundColor: ["#2E86DE", "#FF9F43", "#10AC84", "#FF6B6B", "#9C27B0", "#FF9800", "#4CAF50", "#F44336", "#3F51B5", "#FFC107"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' } }
+            }
+        });
+
+        function loginAdmin() {
+            const password = prompt('Пароль киритинг (admin yoki professor):');
+            if (password === 'admin' || password === 'professor') {
+                isAdmin = true;
+                document.getElementById('adminPanel').style.display = 'block';
+                showTodayNurses();
+                alert('Муваффақиятли кириш!');
+            } else {
+                alert('Нотўғри парол!');
+            }
+        }
+
+        function showTodayNurses() {
+            const today = new Date('2025-10-17').getDate();
+            const startIndex = (today % data.length);
+            const todayNurses = data.slice(startIndex, startIndex + 10);
+            let list = '';
+            todayNurses.forEach(nurse => {
+                list += `<li><strong>${nurse.name}</strong>: ${nurse.location} (${nurse.mfy})</li>`;
+            });
+            document.getElementById('todayNurses').innerHTML = list;
+        }
+
+        function openNursesModal() {
+            document.getElementById('nursesModal').style.display = 'block';
+            const list = document.getElementById('nurseList');
+            list.innerHTML = '';
+            data.forEach((nurse, index) => {
+                const li = document.createElement('li');
+                li.className = 'nurse-item';
+                li.innerHTML = `<h4>${nurse.name}</h4><p>Жой: ${nurse.location}</p><p>МФЙ: ${nurse.mfy}</p>`;
+                li.onclick = () => showNurseDetails(index);
+                list.appendChild(li);
+            });
+        }
+
+        function closeNursesModal() {
+            document.getElementById('nursesModal').style.display = 'none';
+            document.getElementById('nurseDetails').style.display = 'none';
+        }
+
+        function showNurseDetails(index) {
+            const nurse = data[index];
+            const details = document.getElementById('nurseDetails');
+            details.innerHTML = `
+                <h3>${nurse.name}</h3>
+                <div class="nurse-info">
+                    <span><strong>Жойлашув:</strong> ${nurse.location}</span>
+                    <span><strong>МФЙ:</strong> ${nurse.mfy}</span>
+                </div>
+            `;
+            details.style.display = 'block';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('nursesModal');
+            if (event.target == modal) closeNursesModal();
+        }
 
         function getLocation() {
             if (!navigator.geolocation) {
@@ -268,7 +635,7 @@
             const comment = document.getElementById('comment').value.trim();
 
             if(!dpnName || !loginFI || !patientFI || !birthDate || !patronageLocation || !lotGoal || !conclusion) {
-                alert('❌ Илтимос, барча мажбурий майдонларни тўлдиринг!');
+                alert('❌ Илтимос, барча * майдонларни тўлдиринг!');
                 return;
             }
 
@@ -282,9 +649,7 @@
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Юборилмоқда...';
             submitBtn.disabled = true;
 
-            // Telegram bot токени (ўзгартирманг!)
             const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
-            // Гуруҳ ID'си (сиз берган ID билан янгиланди)
             const chatId = '-1003171974281';
             
             const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
@@ -307,11 +672,6 @@
 
 ⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
 
-            console.log('Хабар тексти:', message);
-            console.log('Chat ID (гуруҳ учун минус билан):', chatId);
-            console.log('Токен (қисқача):', botToken.substring(0, 20) + '...');
-
-            // Аввал матнли хабарни юбориш
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -321,15 +681,12 @@
                 })
             })
             .then(response => {
-                console.log('Response status:', response.status);
                 if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 return response.json();
             })
             .then(data => {
-                console.log('Telegram жавоби:', data);
                 if (!data.ok) throw new Error(data.description || 'Номаълум хатолик');
                 
-                // Кейин жойлашувни юбориш
                 return fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -340,14 +697,8 @@
                     })
                 });
             })
-            .then(locResponse => {
-                if (locResponse) {
-                    console.log('Жойлашув status:', locResponse.status);
-                    return locResponse.json();
-                }
-            })
+            .then(locResponse => locResponse ? locResponse.json() : null)
             .then(locData => {
-                if (locData && !locData.ok) console.warn('Жойлашув хатоси:', locData.description);
                 showSuccessMessage();
                 userLocation = null;
                 document.getElementById('locationStatus').style.display = 'none';
@@ -357,9 +708,9 @@
                 locationBtn.disabled = false;
             })
             .catch(error => {
-                console.error('Хатолик (консолда кўринг):', error);
+                console.error('Хатолик:', error);
                 document.getElementById('errorMessage').style.display = 'block';
-                alert('❌ Хатолик: ' + error.message + '\n\nКонсол (F12) ни очиб, жавобни текширинг!');
+                alert('❌ Хатолик: ' + error.message);
             })
             .finally(() => {
                 submitBtn.innerHTML = originalBtnText;
@@ -381,7 +732,7 @@
             setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
         }
 
-        console.log('Сайт юкланди – ID ўзгартирилди: -1003171974281');
+        console.log('Сайт юкланди – Windows учун оптималлаштирилган (209 та маълумот).');
     </script>
 </body>
 </html>
