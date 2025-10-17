@@ -163,11 +163,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Туғилган йили (сана) *</label>
-                    <input type="date" class="form-control" id="birthDate" required>
-                </div>
-                
-                <div class="form-group">
                     <label>Патронаж уйда ёки муассасада *</label>
                     <select class="form-control" id="patronageLocation" required>
                         <option value="">Танланг</option>
@@ -529,10 +524,21 @@
             document.getElementById('nursesModal').style.display = 'block';
             const list = document.getElementById('nurseList');
             list.innerHTML = '';
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
+            const dayStr = now.toLocaleDateString('uz-UZ', { weekday: 'long' });
+            const timeStr = now.toLocaleTimeString('uz-UZ');
             data.forEach((nurse, index) => {
                 const li = document.createElement('li');
                 li.className = 'nurse-item';
-                li.innerHTML = `<h4>${nurse.name}</h4><p>Жой: ${nurse.location}</p><p>МФЙ: ${nurse.mfy}</p>`;
+                li.innerHTML = `
+                    <h4>${nurse.name}</h4>
+                    <p><strong>Жой:</strong> ${nurse.location}</p>
+                    <p><strong>МФЙ:</strong> ${nurse.mfy}</p>
+                    <p><strong>Сана:</strong> ${dateStr}</p>
+                    <p><strong>Кун:</strong> ${dayStr}</p>
+                    <p><strong>Вақт:</strong> ${timeStr}</p>
+                `;
                 li.onclick = () => showNurseDetails(index);
                 list.appendChild(li);
             });
@@ -545,6 +551,10 @@
 
         function showNurseDetails(index) {
             const nurse = data[index];
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
+            const dayStr = now.toLocaleDateString('uz-UZ', { weekday: 'long' });
+            const timeStr = now.toLocaleTimeString('uz-UZ');
             const details = document.getElementById('nurseDetails');
             details.innerHTML = `
                 <h3>${nurse.name}</h3>
@@ -552,6 +562,9 @@
                     <span><strong>Жойлашув:</strong> ${nurse.location}</span>
                     <span><strong>МФЙ:</strong> ${nurse.mfy}</span>
                 </div>
+                <p><strong>Сана:</strong> ${dateStr}</p>
+                <p><strong>Кун:</strong> ${dayStr}</p>
+                <p><strong>Вақт:</strong> ${timeStr}</p>
             `;
             details.style.display = 'block';
         }
@@ -628,13 +641,12 @@
             const loginFI = document.getElementById('loginFI').value.trim();
             const patientFI = document.getElementById('patientFI').value.trim();
             const patientPhone = document.getElementById('patientPhone').value.trim();
-            const birthDate = document.getElementById('birthDate').value.trim();
             const patronageLocation = document.getElementById('patronageLocation').value;
             const lotGoal = document.getElementById('lotGoal').value.trim();
             const conclusion = document.getElementById('conclusion').value.trim();
             const comment = document.getElementById('comment').value.trim();
 
-            if(!dpnName || !loginFI || !patientFI || !birthDate || !patronageLocation || !lotGoal || !conclusion) {
+            if(!dpnName || !loginFI || !patientFI || !patronageLocation || !lotGoal || !conclusion) {
                 alert('❌ Илтимос, барча * майдонларни тўлдиринг!');
                 return;
             }
@@ -661,7 +673,6 @@
 👤 Ходим Ф.И.: ${loginFI}
 👨‍⚕️ Бемор Ф.И.: ${patientFI}
 📞 Бемор телефони: ${patientPhone || "Телефон рақами кiritилмаган"}
-📅 Туғилган йили: ${birthDate}
 📍 Патронаж жойи: ${patronageLocation}
 🎯 Патронаж мақсади: ${lotGoal}
 📝 Хулоса: ${conclusion}
@@ -724,7 +735,6 @@
             document.getElementById('loginFI').value = '';
             document.getElementById('patientFI').value = '';
             document.getElementById('patientPhone').value = '';
-            document.getElementById('birthDate').value = '';
             document.getElementById('patronageLocation').value = '';
             document.getElementById('lotGoal').value = '';
             document.getElementById('conclusion').value = '';
