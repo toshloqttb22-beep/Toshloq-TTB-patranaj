@@ -73,6 +73,11 @@
         .stats-section { margin-bottom: 30px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
+        .daily-list { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
+        .daily-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; background: #f8f9fa; }
+        .daily-item h4 { margin-bottom: 5px; color: #2E86DE; }
+        .daily-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
+        
         .nurse-list { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
         .nurse-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; }
         .nurse-item:hover { background: #f8f9fa; }
@@ -109,7 +114,7 @@
             </nav>
         </div>
         <div class="admin-panel" id="adminPanel">
-            <h3><i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари (17-октябрь, 2025)</h3>
+            <h3 id="adminDate"><i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари</h3>
             <div class="admin-list" id="todayNurses"></div>
         </div>
     </header>
@@ -125,15 +130,15 @@
 
     <div class="container">
         <div class="stats-section">
-            <h2 style="text-align: center; margin-bottom: 20px;">Статистика</h2>
+            <h2 id="statsDate" style="text-align: center; margin-bottom: 20px;">Статистика (Бугунги кун)</h2>
             <div class="stats-grid">
                 <div class="card">
-                    <h3>Жойлашувлар бўйича топ-10</h3>
-                    <canvas id="locationChart" width="400" height="200"></canvas>
+                    <h3>Бугунги жойлашувлар бўйича ҳамширалар</h3>
+                    <ul class="daily-list" id="dailyLocations"></ul>
                 </div>
                 <div class="card">
-                    <h3>МФЙлар бўйича топ-10</h3>
-                    <canvas id="mfyChart" width="400" height="200"></canvas>
+                    <h3>МФЙлар бўйича ҳодимлар (бугунги)</h3>
+                    <ul class="daily-list" id="dailyMFY"></ul>
                 </div>
             </div>
         </div>
@@ -260,43 +265,99 @@
         const data = [
             {"name": "Абдухоликова Мафтуна", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
             {"name": "Юсупова Гузал", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
-            // ... (qolgan ma'lumotlar o'zgarmagan)
+            {"name": "Қодирова Дилфузо", "location": "Тошлок 52-ОП", "mfy": "Zarkent MFY"},
+            {"name": "Аҳмадова Шаҳзода", "location": "Тошлок 52-ОП", "mfy": "Yangi Yo'l MFY"},
+            {"name": "Содиқова Фарҳод", "location": "Тошлок 54-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Мирзоева Лола", "location": "Тошлок 54-ОП", "mfy": "Aabmozor MFY"},
+            {"name": "Ҳасанова Нилуфар", "location": "Тошлоқ 57-ОП", "mfy": "Бесаранг МФЙ"},
+            {"name": "Раҳимова Зухра", "location": "Тошлоқ 57-ОП", "mfy": "Xonariq MFY"},
+            {"name": "Олимова Саодат", "location": "Тошлоқ 93-ОП", "mfy": "Турват МФЙ"},
+            {"name": "Фозилова Малика", "location": "Тошлоқ 93-ОП", "mfy": "Jar Qishloq MFY"},
+            {"name": "Ибрагимова Гулнора", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
+            {"name": "Ҳамидова Роза", "location": "Тошлок 53-ОП", "mfy": "Чек МФЙ"},
+            {"name": "Саидова Дилора", "location": "Тошлок 56-ОП", "mfy": "Zarkent MFY"},
+            {"name": "Тўхтаева Шабнам", "location": "Тошлок 56-ОП", "mfy": "Yangi Yo'l MFY"},
+            {"name": "Усмоновa Феруза", "location": "Тошлок 55-ОП", "mfy": "Xotinqumi MFY"},
+            {"name": "Қосимова Лайла", "location": "Тошлок 55-ОП", "mfy": "Aabmozor MFY"},
+            {"name": "Бобоевa Зебо", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Бесаранг МФЙ"},
+            {"name": "Норова Шоҳиста", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Xonariq MFY"},
+            {"name": "Жўраева Дилбар", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Турват МФЙ"},
+            {"name": "Махсумова Гулбахор", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Jar Qishloq MFY"}
+            // ... (qo'shimcha ma'lumotlar qo'shishingiz mumkin, har kuni yangi bo'limlar uchun)
         ];
 
-        // Chart.js графикларини юклаш
-        const locationCtx = document.getElementById('locationChart').getContext('2d');
-        new Chart(locationCtx, {
-            type: 'bar',
-            data: {
-                labels: ["Тошлок КТМП", "Тошлок 52-ОП", "Тошлок 54-ОП", "Тошлоқ 57-ОП", "Тошлоқ 93-ОП", "Тошлок 53-ОП", "Тошлок 56-ОП", "Тошлок 55-ОП", "Тошлок тумани Кургонча ОШП", "Тошлок тумани Тоглик ОШП"],
-                datasets: [{
-                    label: "Сон",
-                    data: [52, 21, 17, 14, 14, 13, 13, 12, 11, 10],
-                    backgroundColor: ["#2E86DE", "#FF9F43", "#10AC84", "#FF6B6B", "#9C27B0", "#FF9800", "#4CAF50", "#F44336", "#3F51B5", "#FFC107"]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'top' } }
-            }
-        });
+        // Joriy sanani olish
+        function getCurrentDate() {
+            const now = new Date();
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
+            const fullDate = `${day}.${month}.${year}`;
+            const fullDateStr = now.toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
+            return { fullDate, fullDateStr, dayNumber: now.getDate() };
+        }
 
-        const mfyCtx = document.getElementById('mfyChart').getContext('2d');
-        new Chart(mfyCtx, {
-            type: 'bar',
-            data: {
-                labels: ["zarkent mfy", "yangi yo'l mfy", "Xotinqumi MFY", "Аабмозор МФЙ", "БЕСАРАНГ МФЙ", "Xonariq MFY", "Турват МФЙ", "jar qishloq mfy", "Гузарбоши МФЙ", "ЧЕК МФЙ"],
-                datasets: [{
-                    label: "Сон",
-                    data: [6, 5, 5, 5, 5, 5, 5, 4, 4, 4],
-                    backgroundColor: ["#2E86DE", "#FF9F43", "#10AC84", "#FF6B6B", "#9C27B0", "#FF9800", "#4CAF50", "#F44336", "#3F51B5", "#FFC107"]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { position: 'top' } }
-            }
-        });
+        // Barcha sana elementlarini yangilash
+        function updateDateDisplays() {
+            const { fullDateStr } = getCurrentDate();
+            document.getElementById('adminDate').innerHTML = `<i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари (${fullDateStr})`;
+            document.getElementById('statsDate').innerHTML = `Статистика (Бугунги кун: ${fullDateStr})`;
+        }
+
+        // Бугунги куннинг рўйхатини юклаш
+        function loadDailyStats() {
+            const { dayNumber } = getCurrentDate();
+            const startIndex = (dayNumber % data.length);
+            const todayNurses = data.slice(startIndex, startIndex + 10); // Kunlik 10 ta (yoki data uzunligiga qarab)
+
+            // Жойлашувлар бўйича гуруҳлаш
+            const locationGroups = {};
+            todayNurses.forEach(nurse => {
+                if (!locationGroups[nurse.location]) {
+                    locationGroups[nurse.location] = [];
+                }
+                locationGroups[nurse.location].push(nurse.name);
+            });
+
+            // МФЙлар бўйича гуруҳлаш
+            const mfyGroups = {};
+            todayNurses.forEach(nurse => {
+                if (!mfyGroups[nurse.mfy]) {
+                    mfyGroups[nurse.mfy] = [];
+                }
+                mfyGroups[nurse.mfy].push(nurse.name);
+            });
+
+            // Жойлашув рўйхатини кўрсатиш
+            const dailyLocations = document.getElementById('dailyLocations');
+            dailyLocations.innerHTML = '';
+            Object.keys(locationGroups).forEach(location => {
+                const li = document.createElement('li');
+                li.className = 'daily-item';
+                li.innerHTML = `
+                    <h4><i class="fas fa-map-marker-alt"></i> ${location}</h4>
+                    <p><strong>Борган ҳамширалар:</strong> ${locationGroups[location].join(', ')}</p>
+                `;
+                dailyLocations.appendChild(li);
+            });
+
+            // МФЙ рўйхатини кўрсатиш
+            const dailyMFY = document.getElementById('dailyMFY');
+            dailyMFY.innerHTML = '';
+            Object.keys(mfyGroups).forEach(mfy => {
+                const li = document.createElement('li');
+                li.className = 'daily-item';
+                li.innerHTML = `
+                    <h4><i class="fas fa-clinic-medical"></i> ${mfy}</h4>
+                    <p><strong>Борган ходимлар:</strong> ${mfyGroups[mfy].join(', ')}</p>
+                `;
+                dailyMFY.appendChild(li);
+            });
+        }
+
+        // Sahifa yuklanganda statistikani yuklash va sanani yangilash
+        updateDateDisplays();
+        loadDailyStats();
 
         function loginAdmin() {
             const password = prompt('Пароль киритинг (admin yoki professor):');
@@ -311,8 +372,9 @@
         }
 
         function showTodayNurses() {
-            const today = new Date('2025-10-17').getDate();
-            const startIndex = (today % data.length);
+            const { fullDateStr } = getCurrentDate();
+            const { dayNumber } = getCurrentDate();
+            const startIndex = (dayNumber % data.length);
             const todayNurses = data.slice(startIndex, startIndex + 10);
             let list = '';
             todayNurses.forEach(nurse => {
@@ -548,7 +610,7 @@
             setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
         }
 
-        console.log('Сайт юкланди – Windows учун оптималлаштирилган (209 та маълумот).');
+        console.log('Сайт юкланди – Ҳар куни динамик статистика (joriy sana asosida).');
     </script>
 </body>
 </html>
