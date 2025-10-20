@@ -19,7 +19,7 @@
         nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         nav ul li a:hover { opacity: 0.8; }
         
-        .admin-panel { background: #10AC84; color: white; padding: 10px; text-align: center; display: none; margin-bottom: 10px; border-radius: 5px; }
+        .admin-panel { background: #10AC84; color: white; padding: 10px; text-align: center; display: none; margin-bottom: 10px; border-radius: 5px; max-height: 400px; overflow-y: auto; }
         .admin-panel h3 { margin-bottom: 5px; }
         .admin-list { font-size: 0.9rem; }
         
@@ -133,7 +133,7 @@
             <h2 id="statsDate" style="text-align: center; margin-bottom: 20px;">Статистика (Бугунги кун)</h2>
             <div class="stats-grid">
                 <div class="card">
-                    <h3>Бугунги жойлашувлар бўйича ҳамширалар</h3>
+                    <h3>Бугунги жойлашувлар бўйича ҳамширалар (ҳар куниги иш)</h3>
                     <ul class="daily-list" id="dailyLocations"></ul>
                 </div>
                 <div class="card">
@@ -240,7 +240,7 @@
     <div id="nursesModal" class="nurse-modal">
         <div class="modal-content">
             <span class="close" onclick="closeNursesModal()">&times;</span>
-            <h2>Ҳамширалар рўйхати</h2>
+            <h2>Ҳамширалар рўйхати (Тўлиқ)</h2>
             <ul class="nurse-list" id="nurseList"></ul>
             <div id="nurseDetails" class="nurse-details" style="display: none;"></div>
         </div>
@@ -263,27 +263,156 @@
         let userLocation = null;
         let isAdmin = false;
         const data = [
-            {"name": "Абдухоликова Мафтуна", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
-            {"name": "Юсупова Гузал", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
-            {"name": "Қодирова Дилфузо", "location": "Тошлок 52-ОП", "mfy": "Zarkent MFY"},
-            {"name": "Аҳмадова Шаҳзода", "location": "Тошлок 52-ОП", "mfy": "Yangi Yo'l MFY"},
-            {"name": "Содиқова Фарҳод", "location": "Тошлок 54-ОП", "mfy": "Xotinqumi MFY"},
-            {"name": "Мирзоева Лола", "location": "Тошлок 54-ОП", "mfy": "Aabmozor MFY"},
-            {"name": "Ҳасанова Нилуфар", "location": "Тошлоқ 57-ОП", "mfy": "Бесаранг МФЙ"},
-            {"name": "Раҳимова Зухра", "location": "Тошлоқ 57-ОП", "mfy": "Xonariq MFY"},
-            {"name": "Олимова Саодат", "location": "Тошлоқ 93-ОП", "mfy": "Турват МФЙ"},
-            {"name": "Фозилова Малика", "location": "Тошлоқ 93-ОП", "mfy": "Jar Qishloq MFY"},
-            {"name": "Ибрагимова Гулнора", "location": "Тошлок 53-ОП", "mfy": "Гузарбоши МФЙ"},
-            {"name": "Ҳамидова Роза", "location": "Тошлок 53-ОП", "mfy": "Чек МФЙ"},
-            {"name": "Саидова Дилора", "location": "Тошлок 56-ОП", "mfy": "Zarkent MFY"},
-            {"name": "Тўхтаева Шабнам", "location": "Тошлок 56-ОП", "mfy": "Yangi Yo'l MFY"},
-            {"name": "Усмоновa Феруза", "location": "Тошлок 55-ОП", "mfy": "Xotinqumi MFY"},
-            {"name": "Қосимова Лайла", "location": "Тошлок 55-ОП", "mfy": "Aabmozor MFY"},
-            {"name": "Бобоевa Зебо", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Бесаранг МФЙ"},
-            {"name": "Норова Шоҳиста", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Xonariq MFY"},
-            {"name": "Жўраева Дилбар", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Турват МФЙ"},
-            {"name": "Махсумова Гулбахор", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Jar Qishloq MFY"}
-            // ... (qo'shimcha ma'lumotlar qo'shishingiz mumkin, har kuni yangi bo'limlar uchun)
+{"name": "Аҳмадова Шоҳиста", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Бесаранг МФЙ"},
+{"name": "Қосимова Нилуфар", "location": "Тошлоқ 93-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Махсумова Шаҳзода", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Aabmozor MFY"},
+{"name": "Юсупова Фарҳод", "location": "Тошлок КТМП", "mfy": "Бесаранг МФЙ"},
+{"name": "Саидова Саодат", "location": "Тошлок 53-ОП", "mfy": "Xonariq MFY"},
+{"name": "Ҳамидова Дилора", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Бесаранг МФЙ"},
+{"name": "Мирзоева Зебо", "location": "Тошлок 52-ОП", "mfy": "Турват МФЙ"},
+{"name": "Юсупова Зебо", "location": "Тошлок КТМП", "mfy": "Чек МФЙ"},
+{"name": "Ҳамидова Саодат", "location": "Тошлок 54-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Норова Зухра", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Жўраева Дилфузо", "location": "Тошлок 52-ОП", "mfy": "Xonariq MFY"},
+{"name": "Ҳамидова Шаҳзода", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Тўхтаева Шабнам", "location": "Тошлок 56-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Қодирова Лайла", "location": "Тошлок 54-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Қосимова Феруза", "location": "Тошлок КТМП", "mfy": "Xonariq MFY"},
+{"name": "Юсупова Зебо", "location": "Тошлок 54-ОП", "mfy": "Чек МФЙ"},
+{"name": "Саидова Нилуфар", "location": "Тошлок КТМП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Ҳасанова Шабнам", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Турват МФЙ"},
+{"name": "Фозилова Гулбахор", "location": "Тошлок 55-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Фозилова Роза", "location": "Тошлок 53-ОП", "mfy": "Xonariq MFY"},
+{"name": "Норова Лола", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Zarkent MFY"},
+{"name": "Махсумова Малика", "location": "Тошлок 56-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Махсумова Гулнора", "location": "Тошлок 56-ОП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Содиқова Роза", "location": "Тошлок КТМП", "mfy": "Бесаранг МФЙ"},
+{"name": "Юсупова Дилбар", "location": "Тошлоқ 93-ОП", "mfy": "Чек МФЙ"},
+{"name": "Ҳамидова Гузал", "location": "Тошлок 55-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Фозилова Феруза", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Норова Дилбар", "location": "Тошлок 55-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Аҳмадова Лайла", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Турват МФЙ"},
+{"name": "Махсумова Зебо", "location": "Тошлок 56-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Раҳимова Лола", "location": "Тошлок 52-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Раҳимова Гузал", "location": "Тошлок КТМП", "mfy": "Xonariq MFY"},
+{"name": "Тўхтаева Фарҳод", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Xonariq MFY"},
+{"name": "Қосимова Шабнам", "location": "Тошлок 55-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Қосимова Дилора", "location": "Тошлок 55-ОП", "mfy": "Zarkent MFY"},
+{"name": "Бобоевa Дилора", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Aabmozor MFY"},
+{"name": "Ибрагимова Шаҳзода", "location": "Тошлоқ 93-ОП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Жўраева Гулбахор", "location": "Тошлоқ 93-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Аҳмадова Зухра", "location": "Тошлоқ 57-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Олимова Гузал", "location": "Тошлок 54-ОП", "mfy": "Чек МФЙ"},
+{"name": "Абдухоликова Саодат", "location": "Тошлоқ 57-ОП", "mfy": "Чек МФЙ"},
+{"name": "Жўраева Шоҳиста", "location": "Тошлоқ 93-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Фозилова Феруза", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Раҳимова Лайла", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Чек МФЙ"},
+{"name": "Норова Шаҳзода", "location": "Тошлоқ 57-ОП", "mfy": "Xonariq MFY"},
+{"name": "Раҳимова Шаҳзода", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Мирзоева Лола", "location": "Тошлок 52-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Норова Феруза", "location": "Тошлоқ 57-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Абдухоликова Лола", "location": "Тошлоқ 57-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Саидова Дилора", "location": "Тошлок 56-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Содиқова Гулбахор", "location": "Тошлок КТМП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Юсупова Саодат", "location": "Тошлок 56-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Фозилова Роза", "location": "Тошлок 54-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Норова Роза", "location": "Тошлок 56-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Мирзоева Гузал", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Aabmozor MFY"},
+{"name": "Тўхтаева Саодат", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Чек МФЙ"},
+{"name": "Абдухоликова Зухра", "location": "Тошлок 52-ОП", "mfy": "Турват МФЙ"},
+{"name": "Фозилова Шоҳиста", "location": "Тошлок 56-ОП", "mfy": "Xonariq MFY"},
+{"name": "Саидова Дилфузо", "location": "Тошлок 53-ОП", "mfy": "Турват МФЙ"},
+{"name": "Бобоевa Гузал", "location": "Тошлок 54-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Саидова Зебо", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Абдухоликова Лола", "location": "Тошлок 53-ОП", "mfy": "Турват МФЙ"},
+{"name": "Қосимова Шоҳиста", "location": "Тошлоқ 93-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Ибрагимова Фарҳод", "location": "Тошлок 56-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Мирзоева Мафтуна", "location": "Тошлоқ 57-ОП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Раҳимова Мафтуна", "location": "Тошлоқ 57-ОП", "mfy": "Zarkent MFY"},
+{"name": "Қодирова Гулнора", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Xonariq MFY"},
+{"name": "Норова Феруза", "location": "Тошлоқ 93-ОП", "mfy": "Zarkent MFY"},
+{"name": "Ҳасанова Лайла", "location": "Тошлок 52-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Тўхтаева Гузал", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Чек МФЙ"},
+{"name": "Абдухоликова Саодат", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Бобоевa Гулбахор", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Ҳамидова Гулбахор", "location": "Тошлок КТМП", "mfy": "Xonariq MFY"},
+{"name": "Усмоновa Шабнам", "location": "Тошлок 56-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Саидова Зебо", "location": "Тошлоқ 57-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Аҳмадова Фарҳод", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Zarkent MFY"},
+{"name": "Мирзоева Нилуфар", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Жўраева Гулнора", "location": "Тошлок 52-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Тўхтаева Дилбар", "location": "Тошлок 53-ОП", "mfy": "Zarkent MFY"},
+{"name": "Юсупова Лола", "location": "Тошлок 56-ОП", "mfy": "Чек МФЙ"},
+{"name": "Фозилова Дилора", "location": "Тошлок 53-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Ҳасанова Гузал", "location": "Тошлоқ 57-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Саидова Шаҳзода", "location": "Тошлок КТМП", "mfy": "Jar Qishloq MFY"},
+{"name": "Аҳмадова Роза", "location": "Тошлок КТМП", "mfy": "Чек МФЙ"},
+{"name": "Ҳамидова Саодат", "location": "Тошлок 56-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Қосимова Гузал", "location": "Тошлок КТМП", "mfy": "Бесаранг МФЙ"},
+{"name": "Жўраева Гулнора", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Zarkent MFY"},
+{"name": "Махсумова Гулнора", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Тўхтаева Нилуфар", "location": "Тошлоқ 57-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Қодирова Роза", "location": "Тошлок КТМП", "mfy": "Чек МФЙ"},
+{"name": "Махсумова Дилфузо", "location": "Тошлок 52-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Қосимова Зухра", "location": "Тошлоқ 57-ОП", "mfy": "Zarkent MFY"},
+{"name": "Қосимова Шоҳиста", "location": "Тошлоқ 57-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Норова Нилуфар", "location": "Тошлок 52-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Абдухоликова Фарҳод", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Турват МФЙ"},
+{"name": "Мирзоева Малика", "location": "Тошлок КТМП", "mfy": "Чек МФЙ"},
+{"name": "Усмоновa Шабнам", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Zarkent MFY"},
+{"name": "Мирзоева Роза", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Бесаранг МФЙ"},
+{"name": "Аҳмадова Гулбахор", "location": "Тошлок 52-ОП", "mfy": "Xonariq MFY"},
+{"name": "Жўраева Лайла", "location": "Тошлок 54-ОП", "mfy": "Чек МФЙ"},
+{"name": "Ибрагимова Саодат", "location": "Тошлок 52-ОП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Бобоевa Шаҳзода", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Aabmozor MFY"},
+{"name": "Аҳмадова Лайла", "location": "Тошлок 53-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Жўраева Зухра", "location": "Тошлок 55-ОП", "mfy": "Турват МФЙ"},
+{"name": "Мирзоева Дилбар", "location": "Тошлок 52-ОП", "mfy": "Xonariq MFY"},
+{"name": "Саидова Зебо", "location": "Тошлок 52-ОП", "mfy": "Xonariq MFY"},
+{"name": "Норова Шаҳзода", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Усмоновa Шабнам", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Zarkent MFY"},
+{"name": "Ибрагимова Дилбар", "location": "Тошлок 52-ОП", "mfy": "Zarkent MFY"},
+{"name": "Раҳимова Зебо", "location": "Тошлок 55-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Аҳмадова Шаҳзода", "location": "Тошлок 55-ОП", "mfy": "Zarkent MFY"},
+{"name": "Махсумова Шоҳиста", "location": "Тошлок 52-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Қосимова Зухра", "location": "Тошлоқ 93-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Қосимова Гулнора", "location": "Тошлок 56-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Юсупова Дилора", "location": "Тошлок 54-ОП", "mfy": "Гузарбоши МФЙ"},
+{"name": "Мирзоева Дилбар", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Xonariq MFY"},
+{"name": "Юсупова Дилфузо", "location": "Тошлок 54-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Қосимова Дилора", "location": "Тошлок 53-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Қосимова Саодат", "location": "Тошлок 53-ОП", "mfy": "Xonariq MFY"},
+{"name": "Тўхтаева Гулнора", "location": "Тошлоқ 93-ОП", "mfy": "Aabmozor MFY"},
+{"name": "Саидова Гулнора", "location": "Тошлок 53-ОП", "mfy": "Xonariq MFY"},
+{"name": "Қосимова Малика", "location": "Тошлок 55-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Раҳимова Зебо", "location": "Тошлок 53-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Саидова Шабнам", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Қодирова Лайла", "location": "Тошлок 56-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Қодирова Зухра", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Бесаранг МФЙ"},
+{"name": "Раҳимова Дилора", "location": "Тошлок КТМП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Ҳамидова Мафтуна", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Бесаранг МФЙ"},
+{"name": "Норова Зухра", "location": "Тошлок 53-ОП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Аҳмадова Зухра", "location": "Тошлок 53-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Қосимова Роза", "location": "Тошлок 55-ОП", "mfy": "Турват МФЙ"},
+{"name": "Раҳимова Гузал", "location": "Тошлок КТМП", "mfy": "Турват МФЙ"},
+{"name": "Аҳмадова Зебо", "location": "Тошлок 55-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Жўраева Саодат", "location": "Тошлоқ 93-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Бобоевa Лола", "location": "Тошлок 55-ОП", "mfy": "Xonariq MFY"},
+{"name": "Қосимова Малика", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Yangi Yo'l MFY"},
+{"name": "Аҳмадова Шаҳзода", "location": "Тошлок 56-ОП", "mfy": "Xotinqumi MFY"},
+{"name": "Юсупова Гулнора", "location": "Тошлок 56-ОП", "mfy": "Турват МФЙ"},
+{"name": "Ҳамидова Малика", "location": "Тошлок тумани Кургонча ОШП", "mfy": "Aabmozor MFY"},
+{"name": "Махсумова Саодат", "location": "Тошлоқ 93-ОП", "mfy": "Xonariq MFY"},
+{"name": "Фозилова Шабнам", "location": "Тошлоқ 57-ОП", "mfy": "Xonariq MFY"},
+{"name": "Содиқова Гулнора", "location": "Тошлок тумани Тоглик ОШП", "mfy": "Турват МФЙ"},
+{"name": "Ҳасанова Малика", "location": "Тошлоқ 93-ОП", "mfy": "Бесаранг МФЙ"},
+{"name": "Ҳамидова Феруза", "location": "Тошлоқ 57-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Ҳамидова Гулбахор", "location": "Тошлок 53-ОП", "mfy": "Jar Qishloq MFY"},
+{"name": "Содиқова Мафтуна", "location": "Тошлок 54-ОП", "mfy": "Турват МФЙ"},
+{"name": "Махсумова Лола", "location": "Тошлок 53-ОП", "mfy": "Xonariq MFY"},
+{"name": "Усмоновa Зебо", "location": "Тошлок КТМП", "mfy": "Jar Qishloq MFY"},
+{"name": "Абдухоликова Дилбар", "location": "Тошлок 52-ОП", "mfy": "Тошлок ШФЙ дан 2000"},
+{"name": "Ҳамидова Фарҳод", "location": "Тошлок 55-ОП", "mfy": "Гузарбоши МФЙ"}
         ];
 
         // Joriy sanani olish
@@ -304,11 +433,17 @@
             document.getElementById('statsDate').innerHTML = `Статистика (Бугунги кун: ${fullDateStr})`;
         }
 
-        // Бугунги куннинг рўйхатини юклаш
+        // Бугунги куннинг рўйхатини юклаш (100 та ёки барча)
         function loadDailyStats() {
             const { dayNumber } = getCurrentDate();
             const startIndex = (dayNumber % data.length);
-            const todayNurses = data.slice(startIndex, startIndex + 10); // Kunlik 10 ta (yoki data uzunligiga qarab)
+            const maxDaily = 100; // Максимум 100 та ҳамшира кунга
+            let todayNurses = data.slice(startIndex, startIndex + maxDaily);
+            if (startIndex + maxDaily > data.length) {
+                // Агар охирига етса, бошidan давом эттириш
+                const remaining = maxDaily - (data.length - startIndex);
+                todayNurses = todayNurses.concat(data.slice(0, remaining));
+            }
 
             // Жойлашувлар бўйича гуруҳлаш
             const locationGroups = {};
@@ -335,7 +470,7 @@
                 const li = document.createElement('li');
                 li.className = 'daily-item';
                 li.innerHTML = `
-                    <h4><i class="fas fa-map-marker-alt"></i> ${location}</h4>
+                    <h4><i class="fas fa-map-marker-alt"></i> ${location} (Ҳамширалар сони: ${locationGroups[location].length})</h4>
                     <p><strong>Борган ҳамширалар:</strong> ${locationGroups[location].join(', ')}</p>
                 `;
                 dailyLocations.appendChild(li);
@@ -348,7 +483,7 @@
                 const li = document.createElement('li');
                 li.className = 'daily-item';
                 li.innerHTML = `
-                    <h4><i class="fas fa-clinic-medical"></i> ${mfy}</h4>
+                    <h4><i class="fas fa-clinic-medical"></i> ${mfy} (Ҳодимлар сони: ${mfyGroups[mfy].length})</h4>
                     <p><strong>Борган ходимлар:</strong> ${mfyGroups[mfy].join(', ')}</p>
                 `;
                 dailyMFY.appendChild(li);
@@ -365,18 +500,22 @@
                 isAdmin = true;
                 document.getElementById('adminPanel').style.display = 'block';
                 showTodayNurses();
-                alert('Муваффақиятли кириш!');
+                alert('Муваффақиятли кириш! Бугунги ҳамширалар тўлиқ рўйхати кўрсатилади.');
             } else {
                 alert('Нотўғри парол!');
             }
         }
 
         function showTodayNurses() {
-            const { fullDateStr } = getCurrentDate();
-            const { dayNumber } = getCurrentDate();
+            const { fullDateStr, dayNumber } = getCurrentDate();
             const startIndex = (dayNumber % data.length);
-            const todayNurses = data.slice(startIndex, startIndex + 10);
-            let list = '';
+            const maxDaily = 100; // 100 та ёки кўпроқ
+            let todayNurses = data.slice(startIndex, startIndex + maxDaily);
+            if (startIndex + maxDaily > data.length) {
+                const remaining = maxDaily - (data.length - startIndex);
+                todayNurses = todayNurses.concat(data.slice(0, remaining));
+            }
+            let list = `<p><strong>Бугунги кун (${fullDateStr}): ${todayNurses.length} та ҳамшира</strong></p>`;
             todayNurses.forEach(nurse => {
                 list += `<li><strong>${nurse.name}</strong>: ${nurse.location} (${nurse.mfy})</li>`;
             });
@@ -610,7 +749,7 @@
             setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
         }
 
-        console.log('Сайт юкланди – Ҳар куни динамик статистика (joriy sana asosida).');
+        console.log('Сайт юкланди – Ҳар куни динамик статистика (joriy sana asosida, 150+ ҳамшира билан).');
     </script>
 </body>
 </html>
