@@ -105,6 +105,17 @@
         .progress-bar { background: #e9ecef; border-radius: 10px; height: 10px; margin: 5px 0; overflow: hidden; }
         .progress { background: linear-gradient(90deg, #2E86DE, #1a6fc6); height: 100%; border-radius: 10px; }
         
+        .hospital-list { list-style: none; padding: 0; }
+        .hospital-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; background: #f8f9fa; }
+        .hospital-item:hover { background: #e9ecef; }
+        .hospital-item.selected { background: #d4edda; border-color: #10AC84; }
+        .hospital-item h4 { margin-bottom: 5px; color: #2E86DE; }
+        .hospital-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
+        
+        .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .back-btn { background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .back-btn:hover { background: #5a6268; }
+        
         @media (max-width: 768px) {
             .header-content { flex-direction: column; text-align: center; }
             nav ul { margin-top: 15px; }
@@ -116,6 +127,7 @@
             .modal-content { width: 95%; margin: 10% auto; }
             .admin-panel { max-height: 300px; }
             .daily-list { max-height: 300px; }
+            .stats-header { flex-direction: column; gap: 10px; }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -299,38 +311,28 @@
     <div id="statsModal" class="nurse-modal">
         <div class="modal-content">
             <span class="close" onclick="closeStatsModal()">&times;</span>
-            <h2>Ҳамширалар статистикаси</h2>
+            <h2 id="statsModalTitle">Ҳамширалар статистикаси</h2>
             
-            <div class="filter-section">
-                <select id="statsLocationFilter" onchange="updateStats()">
-                    <option value="">Барча шифохоналар</option>
-                    <option value="Тошлок КТМП">Тошлок КТМП</option>
-                    <option value="Тошлок 52-ОП">Тошлок 52-ОП</option>
-                    <option value="Тошлок 53-ОП">Тошлок 53-ОП</option>
-                    <option value="Тошлок 54-ОП">Тошлок 54-ОП</option>
-                    <option value="Тошлок 55-ОП">Тошлок 55-ОП</option>
-                    <option value="Тошлок 56-ОП">Тошлок 56-ОП</option>
-                    <option value="Тошлоқ 57-ОП">Тошлоқ 57-ОП</option>
-                    <option value="Тошлоқ 93-ОП">Тошлоқ 93-ОП</option>
-                    <option value="Тошлок тумани К.Абдувалиев ОШП">Тошлок тумани К.Абдувалиев ОШП</option>
-                    <option value="Тошлок тумани Кургонча ОШП">Тошлок тумани Кургонча ОШП</option>
-                    <option value="Тошлок тумани Мехнатобод ОШП">Тошлок тумани Мехнатобод ОШП</option>
-                    <option value="Тошлок тумани Тоглик ОШП">Тошлок тумани Тоглик ОШП</option>
-                    <option value="Тошлок тумани Холматобод ОШП">Тошлок тумани Холматобод ОШП</option>
-                    <option value="Тошлок тумани Турват ОШП">Тошлок тумани Турват ОШП</option>
-                </select>
-                
-                <select id="statsPeriod" onchange="updateStats()">
-                    <option value="today">Бугун</option>
-                    <option value="week">Бу ҳафта</option>
-                    <option value="month">Бу ой</option>
-                    <option value="all">Ҳамма вақт</option>
-                </select>
+            <div id="statsContent">
+                <!-- Initial view: Hospital list -->
+                <ul class="hospital-list" id="hospitalList"></ul>
             </div>
             
-            <div class="stats-section">
-                <h3>Ҳамширалар бўйича статистика</h3>
-                <ul class="stats-list" id="nurseStatsList"></ul>
+            <!-- Hidden initially: Stats view -->
+            <div id="statsView" style="display: none;">
+                <div class="stats-header">
+                    <button class="back-btn" onclick="backToHospitals()">Орқага</button>
+                    <select id="statsPeriod" onchange="updateSelectedStats()">
+                        <option value="today">Бугун</option>
+                        <option value="week">Бу ҳафта</option>
+                        <option value="month">Бу ой</option>
+                        <option value="all">Ҳамма вақт</option>
+                    </select>
+                </div>
+                <div class="stats-section">
+                    <h3 id="selectedHospitalStatsTitle">Ҳамширалар бўйича статистика</h3>
+                    <ul class="stats-list" id="nurseStatsList"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -350,6 +352,7 @@
     <script>
         let userLocation = null;
         let isAdmin = false;
+        let currentSelectedHospital = null;
         
         // Ҳамширалар маълумотлари - TO'LIQ RO'YXAT
         const nursesData = [
@@ -743,29 +746,67 @@
             return stats;
         }
 
-        // Статистикани кўрсатиш
-        function updateStats() {
-            const locationFilter = document.getElementById('statsLocationFilter').value;
+        // Шайфохоналар рўйхатини кўрсатиш
+        function showHospitalList() {
+            const hospitalList = document.getElementById('hospitalList');
+            hospitalList.innerHTML = '';
+            
+            // Битта шайфохона учун ҳамширалар сонини ҳисоблаш (барча ҳамширалар учун)
+            const hospitalCounts = {};
+            nursesData.forEach(nurse => {
+                if (!hospitalCounts[nurse.location]) hospitalCounts[nurse.location] = 0;
+                hospitalCounts[nurse.location]++;
+            });
+            
+            Object.keys(hospitalCounts).sort().forEach(hospital => {
+                const li = document.createElement('li');
+                li.className = 'hospital-item';
+                li.innerHTML = `
+                    <h4><i class="fas fa-hospital"></i> ${hospital}</h4>
+                    <p><strong>Ҳамширалар сони:</strong> ${hospitalCounts[hospital]} та</p>
+                `;
+                li.onclick = () => selectHospital(hospital);
+                hospitalList.appendChild(li);
+            });
+            
+            document.getElementById('statsContent').style.display = 'block';
+            document.getElementById('statsView').style.display = 'none';
+            document.getElementById('statsModalTitle').innerHTML = 'Шайфохоналар рўйхати - Статистика';
+        }
+
+        // Шайфохона танлаш
+        function selectHospital(hospital) {
+            currentSelectedHospital = hospital;
+            document.getElementById('statsContent').style.display = 'none';
+            document.getElementById('statsView').style.display = 'block';
+            document.getElementById('statsModalTitle').innerHTML = `${hospital} - Ҳамширалар статистикаси`;
+            document.getElementById('selectedHospitalStatsTitle').innerHTML = `${hospital} ҳамширалари бўйича статистика`;
+            updateSelectedStats();
+        }
+
+        // Танланган шайфохона статистикасини янгилаш
+        function updateSelectedStats() {
+            if (!currentSelectedHospital) return;
             const period = document.getElementById('statsPeriod').value;
             const stats = calculateNurseStats(period);
             
             const statsList = document.getElementById('nurseStatsList');
             statsList.innerHTML = '';
             
-            // Ҳамшираларни патронажлар сони бўйича тартиблаш
-            const sortedStats = Object.entries(stats)
-                .filter(([name, data]) => !locationFilter || data.location === locationFilter)
+            // Танланган шайфохона ҳамшираларини фильтрлаш
+            const filteredStats = Object.entries(stats)
+                .filter(([name, data]) => data.location === currentSelectedHospital)
                 .sort((a, b) => b[1].count - a[1].count);
             
-            if (sortedStats.length === 0) {
+            if (filteredStats.length === 0) {
                 statsList.innerHTML = '<li class="stats-item" style="text-align: center; color: #666;">Ҳеч қандай маълумот топилмади</li>';
                 return;
             }
             
             // Энг кўп патронаж сонини топиш (прогресс бар учун)
-            const maxCount = Math.max(...sortedStats.map(([name, data]) => data.count));
+            const maxCount = Math.max(...filteredStats.map(([name, data]) => data.count));
             
-            sortedStats.forEach(([name, data]) => {
+            filteredStats.forEach(([name, data]) => {
                 const percentage = maxCount > 0 ? (data.count / maxCount) * 100 : 0;
                 
                 const li = document.createElement('li');
@@ -775,7 +816,6 @@
                         <span>${name}</span>
                         <span style="color: #10AC84;">${data.count} та</span>
                     </h4>
-                    <p><strong>Жойлашув:</strong> ${data.location}</p>
                     <p><strong>МФЙ:</strong> ${data.mfy || "Кўрсатилмаган"}</p>
                     <p><strong>Охирги патронаж:</strong> ${data.lastVisit}</p>
                     <div class="progress-bar">
@@ -786,15 +826,27 @@
             });
         }
 
+        // Шайфохоналар рўйхатига орқага қайтиш
+        function backToHospitals() {
+            currentSelectedHospital = null;
+            document.getElementById('statsContent').style.display = 'block';
+            document.getElementById('statsView').style.display = 'none';
+            document.getElementById('statsModalTitle').innerHTML = 'Ҳамширалар статистикаси';
+            showHospitalList();
+        }
+
         // Статистика модалини очиш
         function openStatsModal() {
             document.getElementById('statsModal').style.display = 'block';
-            updateStats();
+            showHospitalList();
         }
 
         // Статистика модалини ёпиш
         function closeStatsModal() {
             document.getElementById('statsModal').style.display = 'none';
+            currentSelectedHospital = null;
+            document.getElementById('statsContent').style.display = 'block';
+            document.getElementById('statsView').style.display = 'none';
         }
 
         // МФЙлар рўйхатини олиш
