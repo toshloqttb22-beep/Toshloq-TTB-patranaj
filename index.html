@@ -23,6 +23,9 @@
         .admin-panel h3 { margin-bottom: 5px; }
         .admin-list { font-size: 0.9rem; text-align: left; }
         .admin-list li { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .admin-summary { font-size: 1rem; font-weight: bold; color: #FFD700; margin-bottom: 10px; }
+        .admin-summary button { background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px; }
+        .admin-summary button:hover { background: rgba(255,255,255,0.3); }
         
         .hero { background: white; padding: 60px 0; text-align: center; border-radius: 0 0 15px 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: #2c3e50; }
@@ -77,9 +80,13 @@
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
         .daily-list { list-style: none; padding: 0; max-height: 500px; overflow-y: auto; }
-        .daily-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; background: #f8f9fa; }
-        .daily-item h4 { margin-bottom: 5px; color: #2E86DE; }
-        .daily-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
+        .daily-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; background: #f8f9fa; cursor: pointer; transition: background 0.3s; }
+        .daily-item:hover { background: #e9ecef; }
+        .daily-item h4 { margin-bottom: 5px; color: #2E86DE; display: flex; justify-content: space-between; align-items: center; }
+        .daily-item p { margin: 2px 0; font-size: 0.9rem; color: #666; display: none; } /* Initially hidden */
+        .daily-item .toggle-btn { background: #10AC84; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
+        .daily-item .toggle-btn:hover { background: #0D8C6B; }
+        .daily-item.expanded p { display: block; } /* Show when expanded */
         
         .nurse-list { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
         .nurse-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; }
@@ -131,7 +138,7 @@
         </div>
         <div class="admin-panel" id="adminPanel">
             <h3 id="adminDate"><i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари</h3>
-            <div class="admin-list" id="todayNurses"></div>
+            <div class="admin-summary" id="adminSummary"></div>
         </div>
     </header>
 
@@ -604,7 +611,7 @@
             document.getElementById('statsDate').innerHTML = `Статистика (Бугунги кун: ${fullDateStr})`;
         }
 
-        // Бугунги куннинг рўйхатини юклаш
+        // Бугунги куннинг рўйхатини юклаш (faqat summary, batafsil - click orqali)
         function loadDailyStats() {
             const { dayNumber } = getCurrentDate();
             const startIndex = (dayNumber % nursesData.length);
@@ -626,28 +633,50 @@
             const mfyGroups = {};
             todayNurses.forEach(nurse => {
                 if (!mfyGroups[nurse.mfy]) mfyGroups[nurse.mfy] = [];
-                mfyGroups[nurse.mfy].push(nurse.name);
+                if (nurse.mfy.trim() !== "") mfyGroups[nurse.mfy].push(nurse.name);
             });
 
-            // Жойлашув рўйхати
+            // Жойлашув рўйхати (collapsible)
             const dailyLocations = document.getElementById('dailyLocations');
             dailyLocations.innerHTML = '';
             Object.keys(locationGroups).forEach(location => {
                 const li = document.createElement('li');
                 li.className = 'daily-item';
-                li.innerHTML = `<h4><i class="fas fa-map-marker-alt"></i> ${location} (${locationGroups[location].length} та)</h4><p><strong>Ҳамширалар:</strong> ${locationGroups[location].join(', ')}</p>`;
+                li.innerHTML = `
+                    <h4>
+                        <i class="fas fa-map-marker-alt"></i> ${location} 
+                        <span style="color: #10AC84;">(${locationGroups[location].length} та)</span>
+                        <button class="toggle-btn" onclick="toggleDetails(this)">Кўриш</button>
+                    </h4>
+                    <p><strong>Ҳамширалар:</strong> ${locationGroups[location].join(', ')}</p>
+                `;
                 dailyLocations.appendChild(li);
             });
 
-            // МФЙ рўйхати
+            // МФЙ рўйхати (collapsible)
             const dailyMFY = document.getElementById('dailyMFY');
             dailyMFY.innerHTML = '';
             Object.keys(mfyGroups).forEach(mfy => {
                 const li = document.createElement('li');
                 li.className = 'daily-item';
-                li.innerHTML = `<h4><i class="fas fa-clinic-medical"></i> ${mfy} (${mfyGroups[mfy].length} та)</h4><p><strong>Ходимлар:</strong> ${mfyGroups[mfy].join(', ')}</p>`;
+                li.innerHTML = `
+                    <h4>
+                        <i class="fas fa-clinic-medical"></i> ${mfy} 
+                        <span style="color: #10AC84;">(${mfyGroups[mfy].length} та)</span>
+                        <button class="toggle-btn" onclick="toggleDetails(this)">Кўриш</button>
+                    </h4>
+                    <p><strong>Ходимлар:</strong> ${mfyGroups[mfy].join(', ')}</p>
+                `;
                 dailyMFY.appendChild(li);
             });
+        }
+
+        // Toggle details funksiyasi
+        function toggleDetails(button) {
+            const item = button.closest('.daily-item');
+            item.classList.toggle('expanded');
+            const text = button.textContent;
+            button.textContent = text === 'Кўриш' ? 'Яшириш' : 'Кўриш';
         }
 
         // Sahifa yuklanganda
@@ -659,21 +688,21 @@
             if (password === 'admin' || password === 'professor') {
                 isAdmin = true;
                 document.getElementById('adminPanel').style.display = 'block';
-                showTodayNurses();
-                alert(`Муваффақиятли кириш! Бугунги ҳамширалар тўлиқ рўйхати (${nursesData.length} та) юкланди.`);
+                showAdminSummary();
+                alert(`Муваффақиятли кириш! Бугунги ҳамширалар тўлиқ рўйхати (${nursesData.length} та) юкланди. Тўлиқ рўйхат учун "Ҳамширалар рўйхати" тугмасини босинг.`);
             } else {
                 alert('Нотўғри парол!');
             }
         }
 
-        function showTodayNurses() {
+        // Admin summary (faqat umumiy, batafsil emas)
+        function showAdminSummary() {
             const { fullDateStr } = getCurrentDate();
-            let list = `<p style="font-weight: bold; margin-bottom: 10px;">Бугунги кун (${fullDateStr}): <span style="color: #FFD700;">${nursesData.length} та ҳамшира (тўлиқ)</span></p><ul style="list-style: none;">`;
-            nursesData.forEach(nurse => {
-                list += `<li><strong>${nurse.name}</strong>: ${nurse.location} (${nurse.mfy})</li>`;
-            });
-            list += '</ul>';
-            document.getElementById('todayNurses').innerHTML = list;
+            const summary = document.getElementById('adminSummary');
+            summary.innerHTML = `
+                <p>Бугунги кун (${fullDateStr}): <span style="color: #FFD700;">${nursesData.length} та ҳамшира (тўлиқ)</span></p>
+                <button onclick="openNursesModal()">Тўлиқ рўйхатни кўриш</button>
+            `;
         }
 
         // Ҳамширанинг патронажлар сонини хисоблаш
