@@ -7,9 +7,9 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f8f9fa; color: #333; line-height: 1.6; }
-        
+       
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        
+       
         header { background: linear-gradient(135deg, #2E86DE, #1a6fc6); color: white; padding: 20px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative; }
         .header-content { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.8rem; font-weight: bold; display: flex; align-items: center; }
@@ -18,7 +18,7 @@
         nav ul li { margin-left: 25px; }
         nav ul li a { color: white; text-decoration: none; font-weight: 500; transition: opacity 0.3s; }
         nav ul li a:hover { opacity: 0.8; }
-        
+       
         .admin-panel { background: #10AC84; color: white; padding: 10px; text-align: center; display: none; margin-bottom: 10px; border-radius: 5px; max-height: 500px; overflow-y: auto; }
         .admin-panel h3 { margin-bottom: 5px; }
         .admin-list { font-size: 0.9rem; text-align: left; }
@@ -26,16 +26,16 @@
         .admin-summary { font-size: 1rem; font-weight: bold; color: #FFD700; margin-bottom: 10px; }
         .admin-summary button { background: rgba(255,255,255,0.2); color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-left: 10px; }
         .admin-summary button:hover { background: rgba(255,255,255,0.3); }
-        
+       
         .hero { background: white; padding: 60px 0; text-align: center; border-radius: 0 0 15px 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .hero h1 { font-size: 2.5rem; margin-bottom: 15px; color: #2c3e50; }
         .hero p { font-size: 1.2rem; color: #7f8c8d; max-width: 700px; margin: 0 auto; }
-        
+       
         .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 40px; }
         .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s; }
         .card:hover { transform: translateY(-5px); }
         .card h2 { color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f1f2f6; }
-        
+       
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; }
         .form-control { width: 100%; padding: 12px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
@@ -43,7 +43,7 @@
         .form-control:invalid { border-color: #dc3545; }
         textarea.form-control { height: 120px; resize: vertical; }
         select.form-control { padding: 10px 15px; }
-        
+       
         .btn { background: #2E86DE; color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; margin: 5px; }
         .btn:hover { background: #1a6fc6; }
         .btn:disabled { background: #6c757d; cursor: not-allowed; }
@@ -57,17 +57,17 @@
         .btn-login:hover { background: #7B1FA2; }
         .btn-stats { background: #673AB7; }
         .btn-stats:hover { background: #5E35B1; }
-        
+       
         footer { background: #2c3e50; color: white; padding: 30px 0; margin-top: 50px; }
         .footer-content { display: flex; justify-content: space-between; align-items: center; }
         .footer-contact { display: flex; align-items: center; gap: 10px; font-size: 1rem; }
         .footer-contact a { color: white; text-decoration: none; font-weight: 500; }
         .footer-contact a:hover { text-decoration: underline; }
-        
+       
         .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; border: 1px solid #c3e6cb; }
         .location-status { background: #d1ecf1; color: #0c5460; padding: 12px; border-radius: 8px; margin: 10px 0; display: none; border: 1px solid #bee5eb; }
         .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin: 15px 0; display: none; border: 1px solid #f5c6cb; }
-        
+       
         .nurse-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
         .modal-content { background: white; margin: 5% auto; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 80%; overflow-y: auto; }
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
@@ -75,10 +75,10 @@
         .nurse-details { margin-top: 20px; }
         .nurse-details h3 { color: #2c3e50; margin-bottom: 10px; }
         .nurse-info { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        
+       
         .stats-section { margin-bottom: 30px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        
+       
         .daily-list { list-style: none; padding: 0; max-height: 500px; overflow-y: auto; }
         .daily-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; background: #f8f9fa; cursor: pointer; transition: background 0.3s; }
         .daily-item:hover { background: #e9ecef; }
@@ -87,35 +87,35 @@
         .daily-item .toggle-btn { background: #10AC84; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
         .daily-item .toggle-btn:hover { background: #0D8C6B; }
         .daily-item.expanded p { display: block; } /* Show when expanded */
-        
+       
         .nurse-list { list-style: none; padding: 0; max-height: 400px; overflow-y: auto; }
         .nurse-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; }
         .nurse-item:hover { background: #f8f9fa; }
         .nurse-item h4 { margin-bottom: 5px; color: #2E86DE; }
         .nurse-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
-        
+       
         .stats-list { list-style: none; padding: 0; max-height: 500px; overflow-y: auto; }
         .stats-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; background: #f8f9fa; }
         .stats-item h4 { margin-bottom: 5px; color: #2E86DE; display: flex; justify-content: space-between; }
         .stats-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
-        
+       
         .filter-section { margin-bottom: 20px; }
         .filter-section select { padding: 8px 15px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 16px; margin-right: 10px; }
-        
+       
         .progress-bar { background: #e9ecef; border-radius: 10px; height: 10px; margin: 5px 0; overflow: hidden; }
         .progress { background: linear-gradient(90deg, #2E86DE, #1a6fc6); height: 100%; border-radius: 10px; }
-        
+       
         .hospital-list { list-style: none; padding: 0; }
         .hospital-item { padding: 15px; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: background 0.3s; background: #f8f9fa; }
         .hospital-item:hover { background: #e9ecef; }
         .hospital-item.selected { background: #d4edda; border-color: #10AC84; }
         .hospital-item h4 { margin-bottom: 5px; color: #2E86DE; }
         .hospital-item p { margin: 2px 0; font-size: 0.9rem; color: #666; }
-        
+       
         .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .back-btn { background: #6c757d; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
         .back-btn:hover { background: #5a6268; }
-        
+       
         @media (max-width: 768px) {
             .header-content { flex-direction: column; text-align: center; }
             nav ul { margin-top: 15px; }
@@ -153,7 +153,6 @@
             <div class="admin-summary" id="adminSummary"></div>
         </div>
     </header>
-
     <section class="hero">
         <div class="container">
             <h1>Тиббий Патронаж Тизими</h1>
@@ -163,7 +162,6 @@
             <button class="btn btn-stats" onclick="openStatsModal()">Статистика</button>
         </div>
     </section>
-
     <div class="container">
         <div class="stats-section">
             <h2 id="statsDate" style="text-align: center; margin-bottom: 20px;">Статистика (Бугунги кун)</h2>
@@ -178,37 +176,36 @@
                 </div>
             </div>
         </div>
-
         <div class="dashboard">
             <div class="card">
                 <h2><i class="fas fa-plus-circle"></i> Янги Патронаж Қўшиш</h2>
-                
+               
                 <div class="form-group">
                     <label>ДПН номи *</label>
                     <input type="text" class="form-control" id="dpnName" placeholder="ДПН номини киритинг" required>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Ходим Ф.И. *</label>
                     <input type="text" class="form-control" id="loginFI" placeholder="Ходим Ф.И.ни киритинг" required>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Бемор Ф.И. *</label>
                     <input type="text" class="form-control" id="patientFI" placeholder="Бемор Ф.И.ни киритинг" required>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Бемор туғилган санаси (кун.ой.йил)</label>
                     <input type="text" class="form-control" id="birthDate" placeholder="Мисол: 15.05.1980">
                     <small style="color: #666; font-size: 0.85rem;">Санани "кун.ой.йил" форматида киритинг</small>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Бемор телефони</label>
                     <input type="tel" class="form-control" id="patientPhone" placeholder="+998 XX XXX XX XX">
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Патронаж уйда ёки муассасада *</label>
                     <select class="form-control" id="patronageLocation" required>
@@ -217,22 +214,21 @@
                         <option value="Муассасада">Муассасада</option>
                     </select>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Патронаж мақсади * <span style="color: #2E86DE; font-weight: normal;">(Универсал Прогрессив модель - УПМ)</span></label>
                     <textarea class="form-control" id="lotGoal" placeholder="Патронаж мақсадини киритинг" required></textarea>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Хулоса * <span style="color: #2E86DE; font-weight: normal;">(Умумий хавф белги)</span></label>
                     <textarea class="form-control" id="conclusion" placeholder="Хулосани киритинг" required></textarea>
                 </div>
-                
+               
                 <div class="form-group">
                     <label>Изоҳ</label>
                     <textarea class="form-control" id="comment" placeholder="Изоҳ қолдиринг"></textarea>
                 </div>
-
                 <div class="form-group">
                     <label>Жойлашув *</label>
                     <button type="button" class="btn btn-location" onclick="getLocation()" style="width: 100%;">
@@ -242,24 +238,24 @@
                         <i class="fas fa-check-circle"></i> Жойлашув муваффақиятли қабул қилинди!
                     </div>
                 </div>
-                
+               
                 <button class="btn" onclick="savePatronage()" style="width: 100%; margin-top: 10px;">
                     <i class="fas fa-paper-plane"></i> Юбориш
                 </button>
-                
+               
                 <div class="success" id="successMessage">
                     <i class="fas fa-check-circle"></i> Маълумотлар муваффақиятли юборилди!
                 </div>
-                
+               
                 <div class="error" id="errorMessage">
                     <i class="fas fa-exclamation-circle"></i> Маълумотларни юборишда хатолик юз берди!
                 </div>
             </div>
-            
+           
             <div class="card">
                 <h2><i class="fas fa-info-circle"></i> Тизим Ҳақида</h2>
                 <p>Тошлоқ ТТБ Патронаж Ҳамширалари тизими беморларни уй шароитида кузатиш, тиббий ёрдам кўрсатиш ва уларнинг ҳолатини мониторинг қилиш имкониятини беради. Windows учун оптималлаштирилган – тез юкланиш ва содда интерфейс.</p>
-                
+               
                 <h3 style="margin-top: 20px;">Иш тартиби</h3>
                 <ul style="list-style-type: none; padding-left: 0;">
                     <li style="padding: 8px 0; border-bottom: 1px solid #f1f2f6;"><i class="fas fa-check-circle"></i> Янги патронаж қўшиш</li>
@@ -271,13 +267,12 @@
             </div>
         </div>
     </div>
-
     <!-- Ҳамширалар модали -->
     <div id="nursesModal" class="nurse-modal">
         <div class="modal-content">
             <span class="close" onclick="closeNursesModal()">&times;</span>
             <h2>Ҳамширалар рўйхати (Тўлиқ)</h2>
-            
+           
             <div class="filter-section">
                 <select id="locationFilter" onchange="filterNurses()">
                     <option value="">Барча шифохоналар</option>
@@ -296,28 +291,27 @@
                     <option value="Тошлок тумани Холматобод ОШП">Тошлок тумани Холматобод ОШП</option>
                     <option value="Тошлок тумани Турват ОШП">Тошлок тумани Турват ОШП</option>
                 </select>
-                
+               
                 <select id="mfyFilter" onchange="filterNurses()">
                     <option value="">Барча МФЙлар</option>
                 </select>
             </div>
-            
+           
             <ul class="nurse-list" id="nurseList"></ul>
             <div id="nurseDetails" class="nurse-details" style="display: none;"></div>
         </div>
     </div>
-
     <!-- Статистика модали -->
     <div id="statsModal" class="nurse-modal">
         <div class="modal-content">
             <span class="close" onclick="closeStatsModal()">&times;</span>
             <h2 id="statsModalTitle">Ҳамширалар статистикаси</h2>
-            
+           
             <div id="statsContent">
                 <!-- Initial view: Hospital list -->
                 <ul class="hospital-list" id="hospitalList"></ul>
             </div>
-            
+           
             <!-- Hidden initially: Stats view -->
             <div id="statsView" style="display: none;">
                 <div class="stats-header">
@@ -336,7 +330,6 @@
             </div>
         </div>
     </div>
-
     <footer>
         <div class="container footer-content">
             <div>
@@ -348,12 +341,11 @@
             </div>
         </div>
     </footer>
-
     <script>
         let userLocation = null;
         let isAdmin = false;
         let currentSelectedHospital = null;
-        
+       
         // Ҳамширалар маълумотлари - TO'LIQ RO'YXAT
         const nursesData = [
             // Тошлок КТМП
@@ -408,7 +400,6 @@
             {name: "Уктамова Нилуфар", location: "Тошлок КТМП", mfy: "Хамрак МФЙ дан 1904"},
             {name: "Нурматова Юлдуз", location: "Тошлок КТМП", mfy: ""},
             {name: "Акрамова Зиёда", location: "Тошлок КТМП", mfy: ""},
-
             // Тошлок 52-ОП
             {name: "Тўтасинова Сураё", location: "Тошлок 52-ОП", mfy: "yangi yo'l mfy"},
             {name: "Турдалиева Мафтуна", location: "Тошлок 52-ОП", mfy: "yangi yo'l mfy"},
@@ -431,7 +422,6 @@
             {name: "Каримовa Маъмура", location: "Тошлок 52-ОП", mfy: "zarkent mfy"},
             {name: "Юсупова Назокат", location: "Тошлок 52-ОП", mfy: "chuqur qishloq Zarkent mfy"},
             {name: "Етмишова Манзура", location: "Тошлок 52-ОП", mfy: "jar qishloq mfy"},
-
             // Тошлок 53-ОП
             {name: "Мамажонова Мамлакат Ахмедовна", location: "Тошлок 53-ОП", mfy: "Yakavut MFY"},
             {name: "Жўраева Мадина Комиловна", location: "Тошлок 53-ОП", mfy: "Xotinqumi MFY"},
@@ -446,7 +436,6 @@
             {name: "Холматова Мафтуна Мухторжон қизи", location: "Тошлок 53-ОП", mfy: "Axshak MFY Qanjirga MFY"},
             {name: "Мирзажонова Дилшода Мамасидиқ қизи", location: "Тошлок 53-ОП", mfy: "Axshak MFY"},
             {name: "Каримова Ўғилой Қахрамон қизи", location: "Тошлок 53-ОП", mfy: "Xotinqumi MFY"},
-
             // Тошлок 54-ОП
             {name: "Аскарова Мастура Жураевна", location: "Тошлок 54-ОП", mfy: "Сой буйи МФЙ"},
             {name: "Жураева Шодия Сойибжон кизи", location: "Тошлок 54-ОП", mfy: "Сой буйи МФЙ"},
@@ -465,7 +454,6 @@
             {name: "Усмонова Дилнавоз Умаржон кизи", location: "Тошлок 54-ОП", mfy: "Хужакик МФЙ"},
             {name: "Турдалиева Иноят Шералиевна", location: "Тошлок 54-ОП", mfy: "УчолишМФЙ"},
             {name: "Жумашова Камолат Бердиевна", location: "Тошлок 54-ОП", mfy: "УчолишМФЙ"},
-
             // Тошлок 55-ОП
             {name: "Халилова Машхура Холдорали қизи", location: "Тошлок 55-ОП", mfy: "ЧЕК МФЙ"},
             {name: "Мирзаева Замира Ахмадқизи", location: "Тошлок 55-ОП", mfy: "ЧЕК МФЙ"},
@@ -479,7 +467,6 @@
             {name: "Муйдинова Соҳиба Орибжоновна", location: "Тошлок 55-ОП", mfy: "ИСТИКЛОЛ МФЙ"},
             {name: "Ахмедова Шохида Жалолиддиновна", location: "Тошлок 55-ОП", mfy: "ИСТИКЛОЛ МФЙ"},
             {name: "Муллаева Насиба Набиевна", location: "Тошлок 55-ОП", mfy: "ИСТИКЛОЛ МФЙ"},
-
             // Тошлок 56-ОП
             {name: "Хакимова Наргиза", location: "Тошлок 56-ОП", mfy: "Аабмозор МФЙ"},
             {name: "Марифжонова Магзуна", location: "Тошлок 56-ОП", mfy: "Аабмозор МФЙ"},
@@ -494,7 +481,6 @@
             {name: "Абдурахимова Башорат", location: "Тошлок 56-ОП", mfy: "Куларик мфй"},
             {name: "Хаджаева Фотима", location: "Тошлок 56-ОП", mfy: "Айламажар МФЙ"},
             {name: "Исмоилова Зарнигор", location: "Тошлок 56-ОП", mfy: "Айламажар МФЙ"},
-
             // Тошлоқ 57-ОП
             {name: "Мўминова Жамила Иномжон қизи", location: "Тошлоқ 57-ОП", mfy: "Қипчоқ-ариқ"},
             {name: "Худобердиева Гулчехра Мўминжон қизи", location: "Тошлоқ 57-ОП", mfy: "Қипчоқ-ариқ"},
@@ -510,7 +496,6 @@
             {name: "Тилаволдиева Шоиста Олимжон қизи", location: "Тошлоқ 57-ОП", mfy: "Бўстон"},
             {name: "Мухтозова Чинора Усмоновна", location: "Тошлоқ 57-ОП", mfy: "Бўстон"},
             {name: "Назарова Робахон Бўстонжон қизи", location: "Тошлоқ 57-ОП", mfy: "Бўстон"},
-
             // Тошлоқ 93-ОП
             {name: "Маматкулова Махмуда Зайлобиддиновна", location: "Тошлоқ 93-ОП", mfy: "Кумарик МФЙ"},
             {name: "Миллажонова Умида Ортигалиевна", location: "Тошлоқ 93-ОП", mfy: "Кумарик МФЙ"},
@@ -526,7 +511,6 @@
             {name: "Алиева Мавлуда Рустамовна", location: "Тошлоқ 93-ОП", mfy: "Обисё МФЙ"},
             {name: "Шералиева Зиёда Арабжон кизи", location: "Тошлоқ 93-ОП", mfy: "Обисё МФЙ"},
             {name: "Орифжонова Зилола Исломжон кизи", location: "Тошлоқ 93-ОП", mfy: "Обисё МФЙ"},
-
             // Тошлок тумани К.Абдувалиев ОШП
             {name: "Корабоева Рано Эркинжон кизи", location: "Тошлок тумани К.Абдувалиев ОШП", mfy: "ХОНАКА МФЙ"},
             {name: "Косимова Дилбархон Тухторалиевна", location: "Тошлок тумани К.Абдувалиев ОШП", mfy: "ХОНАКА МФЙ"},
@@ -536,7 +520,6 @@
             {name: "Бакирова Шахноза Анваржоновна", location: "Тошлок тумани К.Абдувалиев ОШП", mfy: "БЕСАРАНГ МФЙ"},
             {name: "Худойбердиева Санъатой Ихтиёр қизи", location: "Тошлок тумани К.Абдувалиев ОШП", mfy: "БЕСАРАНГ МФЙ"},
             {name: "Абдулазизова Хилола Абдуваитовна", location: "Тошлок тумани К.Абдувалиев ОШП", mfy: "БЕСАРАНГ МФЙ"},
-
             // Тошлок тумани Кургонча ОШП
             {name: "Ахмедова Рузихон Мусинжон кизи", location: "Тошлок тумани Кургонча ОШП", mfy: "КУРГОНЧА МФЙ"},
             {name: "Охунова Дилрабо Кабуловна", location: "Тошлок тумани Кургонча ОШП", mfy: "КУРГОНЧА МФЙ"},
@@ -549,7 +532,6 @@
             {name: "Хусанова Ойгул Абдурахмон кизи", location: "Тошлок тумани Кургонча ОШП", mfy: "КАМЧИФУРУШ МФЙ"},
             {name: "Кимсанова Рано Обиджон кизи", location: "Тошлок тумани Кургонча ОШП", mfy: "КАМЧИФУРУШ МФЙ"},
             {name: "Хомидова Матлуба Миркомил кизи", location: "Тошлок тумани Кургонча ОШП", mfy: "КАМЧИФУРУШ МФЙ"},
-
             // Тошлок тумани Мехнатобод ОШП
             {name: "Қосимова Шахзода Абдурахмоновна", location: "Тошлок тумани Мехнатобод ОШП", mfy: "Mehnatobod MFY"},
             {name: "Абдурахмонова Гулшода Машраповна", location: "Тошлок тумани Мехнатобод ОШП", mfy: "Mehnatobod MFY"},
@@ -558,7 +540,6 @@
             {name: "Қодирова Садоқат Зоиржон қизи", location: "Тошлок тумани Мехнатобод ОШП", mfy: "Mehnatobod MFY, Istiqlol MFY"},
             {name: "Сўпиева Гулсанам Юсуфжон қизи", location: "Тошлок тумани Мехнатобод ОШП", mfy: "Mehnatobod MFY"},
             {name: "Умарова Дилрабо Рўзиматжон қизи", location: "Тошлок тумани Мехнатобод ОШП", mfy: "Mehnatobod MFY, Istiqlol MFY Naymanbo'ston MFY"},
-
             // Тошлок тумани Тоглик ОШП
             {name: "Қосимова Азиза Баходиржон қизи", location: "Тошлок тумани Тоглик ОШП", mfy: "Ахшак мфй"},
             {name: "Ахмедова Дилдора Сайипжоновна", location: "Тошлок тумани Тоглик ОШП", mfy: "Ахшак гузар МФЙ"},
@@ -570,7 +551,6 @@
             {name: "Тошпўлатова Олима Усмонжоновна", location: "Тошлок тумани Тоглик ОШП", mfy: "Тоглик МФЙ"},
             {name: "Каримова Шахноза Ибрагимовна", location: "Тошлок тумани Тоглик ОШП", mfy: "Қанжирға МФЙ"},
             {name: "Ахмедова Зилола Шерматовна", location: "Тошлок тумани Тоглик ОШП", mfy: "Қанжирға МФЙ"},
-
             // Тошлок тумани Холматобод ОШП
             {name: "Мирзаева Диляра", location: "Тошлок тумани Холматобод ОШП", mfy: "Xonariq MFY"},
             {name: "Мамажонова Отика", location: "Тошлок тумани Холматобод ОШП", mfy: "Xonariq MFY"},
@@ -579,7 +559,6 @@
             {name: "Маматошиева Дилфуза", location: "Тошлок тумани Холматобод ОШП", mfy: "Naymanboston MFY"},
             {name: "Машарипова Мадина", location: "Тошлок тумани Холматобод ОШП", mfy: "Naymanboston MFY"},
             {name: "Мамазикирова Шарофат", location: "Тошлок тумани Холматобод ОШП", mfy: "Xonariq MFY"},
-
             // Тошлок тумани Турват ОШП
             {name: "Тожибоева Гулмира Тилаволди қизи", location: "Тошлок тумани Турват ОШП", mfy: "Юқори МФЙ"},
             {name: "Сайдаматова Мадина Икромжон қизи", location: "Тошлок тумани Турват ОШП", mfy: "Юқори МФЙ"},
@@ -592,10 +571,8 @@
             {name: "Тўхтасинова Хаётхон Юлдашевна", location: "Тошлок тумани Турват ОШП", mfy: "Қалача МФЙ"},
             {name: "Абдурахмонова Барно Нематжоновна", location: "Тошлок тумани Турват ОШП", mfy: "Қалача МФЙ"}
         ];
-
         // Патронаж тарихини сақлаш учун массив
         let patronageHistory = JSON.parse(localStorage.getItem('patronageHistory')) || [];
-
         // Joriy sanani olish
         function getCurrentDate() {
             const now = new Date();
@@ -606,14 +583,12 @@
             const fullDateStr = now.toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
             return { fullDate, fullDateStr, dayNumber: now.getDate() };
         }
-
         // Barcha sana elementlarini yangilash
         function updateDateDisplays() {
             const { fullDateStr } = getCurrentDate();
             document.getElementById('adminDate').innerHTML = `<i class="fas fa-user-md"></i> Бугунги ҳамширалар жойлашувлари (тўлиқ рўйхат: ${fullDateStr})`;
             document.getElementById('statsDate').innerHTML = `Статистика (Бугунги кун: ${fullDateStr})`;
         }
-
         // Бугунги куннинг рўйхатини юклаш (faqat summary, batafsil - click orqali)
         function loadDailyStats() {
             const { dayNumber } = getCurrentDate();
@@ -624,21 +599,18 @@
                 const remaining = maxDaily - (nursesData.length - startIndex);
                 todayNurses = todayNurses.concat(nursesData.slice(0, remaining));
             }
-
             // Жойлашувлар бўйича гуруҳлаш
             const locationGroups = {};
             todayNurses.forEach(nurse => {
                 if (!locationGroups[nurse.location]) locationGroups[nurse.location] = [];
                 locationGroups[nurse.location].push(nurse.name);
             });
-
             // МФЙлар бўйича гуруҳлаш
             const mfyGroups = {};
             todayNurses.forEach(nurse => {
                 if (!mfyGroups[nurse.mfy]) mfyGroups[nurse.mfy] = [];
                 if (nurse.mfy.trim() !== "") mfyGroups[nurse.mfy].push(nurse.name);
             });
-
             // Жойлашув рўйхати (collapsible)
             const dailyLocations = document.getElementById('dailyLocations');
             dailyLocations.innerHTML = '';
@@ -647,7 +619,7 @@
                 li.className = 'daily-item';
                 li.innerHTML = `
                     <h4>
-                        <i class="fas fa-map-marker-alt"></i> ${location} 
+                        <i class="fas fa-map-marker-alt"></i> ${location}
                         <span style="color: #10AC84;">(${locationGroups[location].length} та)</span>
                         <button class="toggle-btn" onclick="toggleDetails(this)">Кўриш</button>
                     </h4>
@@ -655,7 +627,6 @@
                 `;
                 dailyLocations.appendChild(li);
             });
-
             // МФЙ рўйхати (collapsible)
             const dailyMFY = document.getElementById('dailyMFY');
             dailyMFY.innerHTML = '';
@@ -664,7 +635,7 @@
                 li.className = 'daily-item';
                 li.innerHTML = `
                     <h4>
-                        <i class="fas fa-clinic-medical"></i> ${mfy} 
+                        <i class="fas fa-clinic-medical"></i> ${mfy}
                         <span style="color: #10AC84;">(${mfyGroups[mfy].length} та)</span>
                         <button class="toggle-btn" onclick="toggleDetails(this)">Кўриш</button>
                     </h4>
@@ -673,7 +644,6 @@
                 dailyMFY.appendChild(li);
             });
         }
-
         // Toggle details funksiyasi
         function toggleDetails(button) {
             const item = button.closest('.daily-item');
@@ -681,11 +651,9 @@
             const text = button.textContent;
             button.textContent = text === 'Кўриш' ? 'Яшириш' : 'Кўриш';
         }
-
         // Sahifa yuklanganda
         updateDateDisplays();
         loadDailyStats();
-
         function loginAdmin() {
             const password = prompt('Пароль киритинг (admin yoki professor):');
             if (password === 'admin' || password === 'professor') {
@@ -697,7 +665,6 @@
                 alert('Нотўғри парол!');
             }
         }
-
         // Admin summary (faqat umumiy, batafsil emas)
         function showAdminSummary() {
             const { fullDateStr } = getCurrentDate();
@@ -707,18 +674,17 @@
                 <button onclick="openNursesModal()">Тўлиқ рўйхатни кўриш</button>
             `;
         }
-
         // Ҳамширанинг патронажлар сонини хисоблаш
         function calculateNurseStats(period = 'all') {
             const stats = {};
             const now = new Date();
-            
+           
             nursesData.forEach(nurse => {
                 const nursePatronages = patronageHistory.filter(record => {
                     if (record.nurseName !== nurse.name) return false;
-                    
+                   
                     const recordDate = new Date(record.timestamp);
-                    
+                   
                     switch(period) {
                         case 'today':
                             return recordDate.toDateString() === now.toDateString();
@@ -732,32 +698,31 @@
                             return true;
                     }
                 });
-                
+               
                 stats[nurse.name] = {
                     count: nursePatronages.length,
                     location: nurse.location,
                     mfy: nurse.mfy,
-                    lastVisit: nursePatronages.length > 0 ? 
-                        new Date(nursePatronages[nursePatronages.length - 1].timestamp).toLocaleDateString('uz-UZ') : 
+                    lastVisit: nursePatronages.length > 0 ?
+                        new Date(nursePatronages[nursePatronages.length - 1].timestamp).toLocaleDateString('uz-UZ') :
                         'Ҳеч қандай'
                 };
             });
-            
+           
             return stats;
         }
-
         // Шайфохоналар рўйхатини кўрсатиш
         function showHospitalList() {
             const hospitalList = document.getElementById('hospitalList');
             hospitalList.innerHTML = '';
-            
+           
             // Битта шайфохона учун ҳамширалар сонини ҳисоблаш (барча ҳамширалар учун)
             const hospitalCounts = {};
             nursesData.forEach(nurse => {
                 if (!hospitalCounts[nurse.location]) hospitalCounts[nurse.location] = 0;
                 hospitalCounts[nurse.location]++;
             });
-            
+           
             Object.keys(hospitalCounts).sort().forEach(hospital => {
                 const li = document.createElement('li');
                 li.className = 'hospital-item';
@@ -768,12 +733,11 @@
                 li.onclick = () => selectHospital(hospital);
                 hospitalList.appendChild(li);
             });
-            
+           
             document.getElementById('statsContent').style.display = 'block';
             document.getElementById('statsView').style.display = 'none';
             document.getElementById('statsModalTitle').innerHTML = 'Шайфохоналар рўйхати - Статистика';
         }
-
         // Шайфохона танлаш
         function selectHospital(hospital) {
             currentSelectedHospital = hospital;
@@ -783,32 +747,31 @@
             document.getElementById('selectedHospitalStatsTitle').innerHTML = `${hospital} ҳамширалари бўйича статистика`;
             updateSelectedStats();
         }
-
         // Танланган шайфохона статистикасини янгилаш
         function updateSelectedStats() {
             if (!currentSelectedHospital) return;
             const period = document.getElementById('statsPeriod').value;
             const stats = calculateNurseStats(period);
-            
+           
             const statsList = document.getElementById('nurseStatsList');
             statsList.innerHTML = '';
-            
+           
             // Танланган шайфохона ҳамшираларини фильтрлаш
             const filteredStats = Object.entries(stats)
                 .filter(([name, data]) => data.location === currentSelectedHospital)
                 .sort((a, b) => b[1].count - a[1].count);
-            
+           
             if (filteredStats.length === 0) {
                 statsList.innerHTML = '<li class="stats-item" style="text-align: center; color: #666;">Ҳеч қандай маълумот топилмади</li>';
                 return;
             }
-            
+           
             // Энг кўп патронаж сонини топиш (прогресс бар учун)
             const maxCount = Math.max(...filteredStats.map(([name, data]) => data.count));
-            
+           
             filteredStats.forEach(([name, data]) => {
                 const percentage = maxCount > 0 ? (data.count / maxCount) * 100 : 0;
-                
+               
                 const li = document.createElement('li');
                 li.className = 'stats-item';
                 li.innerHTML = `
@@ -825,7 +788,6 @@
                 statsList.appendChild(li);
             });
         }
-
         // Шайфохоналар рўйхатига орқага қайтиш
         function backToHospitals() {
             currentSelectedHospital = null;
@@ -834,13 +796,11 @@
             document.getElementById('statsModalTitle').innerHTML = 'Ҳамширалар статистикаси';
             showHospitalList();
         }
-
         // Статистика модалини очиш
         function openStatsModal() {
             document.getElementById('statsModal').style.display = 'block';
             showHospitalList();
         }
-
         // Статистика модалини ёпиш
         function closeStatsModal() {
             document.getElementById('statsModal').style.display = 'none';
@@ -848,7 +808,6 @@
             document.getElementById('statsContent').style.display = 'block';
             document.getElementById('statsView').style.display = 'none';
         }
-
         // МФЙлар рўйхатини олиш
         function getMFYList() {
             const mfySet = new Set();
@@ -859,15 +818,14 @@
             });
             return Array.from(mfySet).sort();
         }
-
         // Модал ойнасини очиш
         function openNursesModal() {
             document.getElementById('nursesModal').style.display = 'block';
-            
+           
             // МФЙлар рўйхатини тўлдириш
             const mfyFilter = document.getElementById('mfyFilter');
             mfyFilter.innerHTML = '<option value="">Барча МФЙлар</option>';
-            
+           
             const mfyList = getMFYList();
             mfyList.forEach(mfy => {
                 const option = document.createElement('option');
@@ -875,45 +833,42 @@
                 option.textContent = mfy;
                 mfyFilter.appendChild(option);
             });
-            
+           
             // Ҳамширалар рўйхатини кўрсатиш
             filterNurses();
         }
-
         // Модал ойнасини ёпиш
         function closeNursesModal() {
             document.getElementById('nursesModal').style.display = 'none';
         }
-
         // Ҳамшираларни фильтрлаш
         function filterNurses() {
             const locationFilter = document.getElementById('locationFilter').value;
             const mfyFilter = document.getElementById('mfyFilter').value;
-            
+           
             const filteredNurses = nursesData.filter(nurse => {
                 const locationMatch = !locationFilter || nurse.location === locationFilter;
                 const mfyMatch = !mfyFilter || nurse.mfy === mfyFilter;
                 return locationMatch && mfyMatch;
             });
-            
+           
             displayNurses(filteredNurses);
         }
-
         // Ҳамширалар рўйхатини кўрсатиш
         function displayNurses(nurses) {
             const list = document.getElementById('nurseList');
             list.innerHTML = '';
-            
+           
             if (nurses.length === 0) {
                 list.innerHTML = '<li class="nurse-item" style="text-align: center; color: #666;">Ҳеч қандай маълумот топилмади</li>';
                 return;
             }
-            
+           
             const now = new Date();
             const dateStr = now.toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
             const dayStr = now.toLocaleDateString('uz-UZ', { weekday: 'long' });
             const timeStr = now.toLocaleTimeString('uz-UZ');
-            
+           
             nurses.forEach((nurse, index) => {
                 const li = document.createElement('li');
                 li.className = 'nurse-item';
@@ -929,7 +884,6 @@
                 list.appendChild(li);
             });
         }
-
         function showNurseDetails(index) {
             const nurse = nursesData[index];
             const now = new Date();
@@ -949,14 +903,12 @@
             `;
             details.style.display = 'block';
         }
-
         window.onclick = function(event) {
             const nursesModal = document.getElementById('nursesModal');
             const statsModal = document.getElementById('statsModal');
             if (event.target == nursesModal) closeNursesModal();
             if (event.target == statsModal) closeStatsModal();
         }
-
         function getLocation() {
             if (!navigator.geolocation) {
                 alert("❌ Браузерингиз жойлашувни қўллаб-қувватламайди");
@@ -990,11 +942,26 @@
                 { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
             );
         }
-
+        // Telegram га узун хабарларни бўлиниб юборish функцияси
+        async function sendTelegramMessages(botToken, chatId, messages) {
+            for (let i = 0; i < messages.length; i++) {
+                const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: messages[i],
+                        parse_mode: 'HTML'  // HTML форматини қўллаб-қувватлаш учун (узунлигини камайтириш)
+                    })
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                const data = await response.json();
+                if (!data.ok) throw new Error(data.description || 'Номаълум хатолик');
+            }
+        }
         function savePatronage() {
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
-
             const dpnName = document.getElementById('dpnName').value.trim();
             const loginFI = document.getElementById('loginFI').value.trim();
             const patientFI = document.getElementById('patientFI').value.trim();
@@ -1004,62 +971,49 @@
             const lotGoal = document.getElementById('lotGoal').value.trim();
             const conclusion = document.getElementById('conclusion').value.trim();
             const comment = document.getElementById('comment').value.trim();
-
             if(!dpnName || !loginFI || !patientFI || !patronageLocation || !lotGoal || !conclusion) {
                 alert('❌ Илтимос, барча * майдонларни тўлдиринг!');
                 return;
             }
-
             if (!userLocation) {
                 alert('❌ Илтимос, аввал жойлашувни олинг!');
                 return;
             }
-
             const submitBtn = document.querySelector('.btn');
             const originalBtnText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Юборилмоқда...';
             submitBtn.disabled = true;
-
             const botToken = '8116032643:AAGuDOtyqOyj1ihCBQvNIs_7b0nEqtK047w';
             const chatId = '-1003171974281';
-            
+           
             const locationLink = `https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}`;
             const locationText = `📍 Жойлашув: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (аниқлик: ${userLocation.accuracy.toFixed(0)} м)`;
-            
+           
             const birthDateStr = birthDate || "Кiritилмаган";
-            
-            const message = `🏥 ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ
+           
+            // Хабарни бўлинтириш: асосий қисм ва узун қисмларни алоҳида юборish
+            const mainMessage = `🏥 <b>ЯНГИ ПАТРОНАЖ МАЪЛУМОТЛАРИ</b>
 
-📋 ДПН номи: ${dpnName}
-👤 Ходим Ф.И.: ${loginFI}
-👨‍⚕️ Бемор Ф.И.: ${patientFI}
-👶 Бемор туғилган санаси: ${birthDateStr}
-📞 Бемор телефони: ${patientPhone || "Телефон рақами кiritилмаган"}
-📍 Патронаж жойи: ${patronageLocation}
-🎯 Патронаж мақсади (УПМ): ${lotGoal}
-📝 Хулоса (Умумий хавф белги): ${conclusion}
-💬 Изоҳ: ${comment || "Изоҳ қолдирилмаган"}
+📋 <b>ДПН номи:</b> ${dpnName}
+👤 <b>Ходим Ф.И.:</b> ${loginFI}
+👨‍⚕️ <b>Бемор Ф.И.:</b> ${patientFI}
+👶 <b>Бемор туғилган санаси:</b> ${birthDateStr}
+📞 <b>Бемор телефони:</b> ${patientPhone || "Телефон рақами кiritилмаган"}
+📍 <b>Патронаж жойи:</b> ${patronageLocation}
+🎯 <b>Патронаж мақсади (УПМ):</b> ${lotGoal}`;
+
+            const continuationMessage = `📝 <b>Хулоса (Умумий хавф белги):</b> ${conclusion}
+
+💬 <b>Изоҳ:</b> ${comment || "Изоҳ қолдирилмаган"}
 
 🗺️ ${locationText}
-🔗 Харита: ${locationLink}
+🔗 <b>Харита:</b> ${locationLink}
+⏰ <b>Вақт:</b> ${new Date().toLocaleString('uz-UZ')}`;
 
-⏰ Вақт: ${new Date().toLocaleString('uz-UZ')}`;
+            const messages = [mainMessage, continuationMessage];  // Икки хабар: асосий ва давоми
 
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                return response.json();
-            })
-            .then(data => {
-                if (!data.ok) throw new Error(data.description || 'Номаълум хатолик');
-                
+            sendTelegramMessages(botToken, chatId, messages)
+            .then(async () => {
                 // Патронаж тарихига қўшиш
                 patronageHistory.push({
                     nurseName: loginFI,
@@ -1067,11 +1021,12 @@
                     patientName: patientFI,
                     location: userLocation ? `${userLocation.latitude}, ${userLocation.longitude}` : 'Noma\'lum'
                 });
-                
+               
                 // Локал хранилищга сақлаш
                 localStorage.setItem('patronageHistory', JSON.stringify(patronageHistory));
-                
-                return fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
+               
+                // Жойлашувни юборish (алohида)
+                await fetch(`https://api.telegram.org/bot${botToken}/sendLocation`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1080,9 +1035,7 @@
                         longitude: userLocation.longitude
                     })
                 });
-            })
-            .then(locResponse => locResponse ? locResponse.json() : null)
-            .then(locData => {
+               
                 showSuccessMessage();
                 userLocation = null;
                 document.getElementById('locationStatus').style.display = 'none';
@@ -1101,7 +1054,6 @@
                 submitBtn.disabled = false;
             });
         }
-
         function showSuccessMessage() {
             document.getElementById('successMessage').style.display = 'block';
             document.getElementById('dpnName').value = '';
@@ -1115,7 +1067,6 @@
             document.getElementById('comment').value = '';
             setTimeout(() => document.getElementById('successMessage').style.display = 'none', 5000);
         }
-
         console.log('Сайт юкланди – Ҳар куни тўлиқ ҳамширалар рўйхати (статистика ва админ панелида).');
         console.log('Жами патронажлар:', patronageHistory.length);
         console.log('Ҳамширалар сони:', nursesData.length);
